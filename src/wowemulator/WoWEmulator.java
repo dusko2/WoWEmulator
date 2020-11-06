@@ -14,7 +14,7 @@ import wowemulator.world.WorldServer;
  *
  * @author Dusko
  */
-public class AuthMain {
+public class WoWEmulator {
 
     public static void main(String[] args) {
         startLogonServer();
