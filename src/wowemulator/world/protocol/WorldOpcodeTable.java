@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wowemulator.world;
+package wowemulator.world.protocol;
 
 import java.util.HashMap;
 import java.util.Map;
 import wowemulator.networking.packet.Packet;
+import wowemulator.world.WorldSession;
 import wowemulator.world.handler.AuthProofHandler;
 import wowemulator.world.handler.CharacterEnumHandler;
 import wowemulator.world.handler.PingHandler;

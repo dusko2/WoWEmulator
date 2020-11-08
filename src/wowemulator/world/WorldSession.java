@@ -5,6 +5,10 @@
  */
 package wowemulator.world;
 
+import wowemulator.world.packet.WorldSessionPacketIO;
+import wowemulator.world.packet.WorldPacket;
+import wowemulator.world.protocol.WorldOpcode;
+import wowemulator.world.protocol.WorldOpcodeTable;
 import java.nio.ByteOrder;
 import java.security.SecureRandom;
 import wowemulator.networking.client.TCPConnection;

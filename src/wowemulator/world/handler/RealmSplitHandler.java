@@ -6,8 +6,8 @@
 package wowemulator.world.handler;
 
 import wowemulator.networking.packet.Packet;
-import wowemulator.world.WorldOpcode;
-import wowemulator.world.WorldPacket;
+import wowemulator.world.protocol.WorldOpcode;
+import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.WorldSession;
 
 /**

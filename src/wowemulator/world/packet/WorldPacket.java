@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wowemulator.world;
+package wowemulator.world.packet;
 
+import wowemulator.world.protocol.WorldOpcode;
 import java.nio.ByteOrder;
 import wowemulator.networking.packet.Packet;
 
