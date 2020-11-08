@@ -81,11 +81,10 @@ public class WorldSessionPacketIO extends PacketIO {
         }
 	
         header[index++] = (byte)(0xFF & (newSize >> 8));
-        header[index++] = (byte)(0xFF & (newSize >> 0));
+        header[index++] = (byte)(0xFF & (newSize));
         header[index++] = (byte)(0xFF & opcode);
         header[index] = (byte)(0xFF & (opcode >> 8));
         
-        System.out.println("Before === " + Arrays.toString(header));
         return crypt.encrypt(header);
     }
     

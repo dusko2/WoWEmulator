@@ -13,16 +13,25 @@ public enum WorldOpcode {
 
     MsgTransferInitiate(0x4F57),
     
-    CmsgAuthProof      (0x01ED),
-    CmsgCharEnum       (0x0037),
-    CmsgRealmSplit     (0x038C),
-    CmsgPing           (0x01DC),
+    /*
+     * Client messages
+     */
     
-    SmsgAuthChallenge  (0x01EC),
-    SmsgAuthResponse   (0x01EE),
-    SmsgCharEnum       (0x003B),
-    SmsgPong           (0x01DD),
-    SmsgRealmSplit     (0x038B);
+    CmsgAuthProof               (0x01ED),
+    CmsgCharEnum                (0x0037),
+    CmsgRealmSplit              (0x038C),
+    CmsgPing                    (0x01DC),
+    CmsgReadyForAccountDataTimes(0x04FF),
+    
+    /*
+     * Server messages
+     */
+    
+    SmsgAuthChallenge(0x01EC),
+    SmsgAuthResponse (0x01EE),
+    SmsgCharEnum     (0x003B),
+    SmsgPong         (0x01DD),
+    SmsgRealmSplit   (0x038B);
     
     private final int rawValue;
 
