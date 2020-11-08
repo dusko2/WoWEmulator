@@ -34,11 +34,11 @@ public enum WorldOpcode {
     SmsgRealmSplit   (0x038B);
     
     private final int rawValue;
-
+    
     private WorldOpcode(int rawValue) {
         this.rawValue = rawValue;
     }
-
+    
     public short getRawValue() {
         return (short)rawValue;
     }

@@ -7,20 +7,15 @@ package wowemulator.world.handler;
 
 import wowemulator.world.protocol.WorldOpcodeHandler;
 import wowemulator.networking.packet.Packet;
-import wowemulator.world.protocol.WorldOpcode;
-import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.WorldSession;
 
 /**
  *
  * @author Dusko
  */
-public class CharacterEnumHandler implements WorldOpcodeHandler {
+public class ReadyForAccountDataTimesHandler implements WorldOpcodeHandler {
 
-    @Override
-    public void handle(WorldSession session, Packet packet) {
-        WorldPacket response = new WorldPacket(WorldOpcode.SmsgCharEnum, 1);
-        response.putByte((byte)0);
-        session.send(response);
+    @Override public void handle(WorldSession session, Packet packet) {
+        
     }
 }

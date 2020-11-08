@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wowemulator.world.handler;
+package wowemulator.world.protocol;
 
 import wowemulator.networking.packet.Packet;
 import wowemulator.world.WorldSession;

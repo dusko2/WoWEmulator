@@ -12,8 +12,8 @@ import wowemulator.world.WorldSession;
 import wowemulator.world.handler.AuthProofHandler;
 import wowemulator.world.handler.CharacterEnumHandler;
 import wowemulator.world.handler.PingHandler;
+import wowemulator.world.handler.ReadyForAccountDataTimesHandler;
 import wowemulator.world.handler.RealmSplitHandler;
-import wowemulator.world.handler.WorldOpcodeHandler;
 
 /**
  *
@@ -24,17 +24,14 @@ public class WorldOpcodeTable {
     private final Map<WorldOpcode, WorldOpcodeHandler> opcodeTable = new HashMap<>();
 
     public WorldOpcodeTable() {
-        opcodeTable.put(WorldOpcode.CmsgAuthProof,       new AuthProofHandler());
-        opcodeTable.put(WorldOpcode.CmsgCharEnum,        new CharacterEnumHandler());
-        opcodeTable.put(WorldOpcode.CmsgRealmSplit,      new RealmSplitHandler());
-        opcodeTable.put(WorldOpcode.CmsgPing,            new PingHandler());
+        opcodeTable.put(WorldOpcode.CmsgAuthProof,                new AuthProofHandler());
+        opcodeTable.put(WorldOpcode.CmsgCharEnum,                 new CharacterEnumHandler());
+        opcodeTable.put(WorldOpcode.CmsgRealmSplit,               new RealmSplitHandler());
+        opcodeTable.put(WorldOpcode.CmsgPing,                     new PingHandler());
+        opcodeTable.put(WorldOpcode.CmsgReadyForAccountDataTimes, new ReadyForAccountDataTimesHandler());
     }
     
     public final void handle(WorldOpcode opcode, WorldSession session, Packet packet) {
-        if (opcode == WorldOpcode.CmsgReadyForAccountDataTimes) {
-            return;
-        }
-        
         System.out.println(">> Handling -> [" + opcode.name() + "]");
         opcodeTable.get(opcode).handle(session, packet);
     }

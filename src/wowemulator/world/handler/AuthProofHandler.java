@@ -5,6 +5,7 @@
  */
 package wowemulator.world.handler;
 
+import wowemulator.world.protocol.WorldOpcodeHandler;
 import java.security.MessageDigest;
 import wowemulator.client.Client;
 import wowemulator.logon.LogonServer;
