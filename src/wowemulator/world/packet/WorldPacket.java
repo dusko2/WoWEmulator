@@ -8,6 +8,7 @@ package wowemulator.world.packet;
 import wowemulator.world.protocol.WorldOpcode;
 import java.nio.ByteOrder;
 import wowemulator.networking.packet.Packet;
+import wowemulator.utils.Vec4;
 
 /**
  *
@@ -19,5 +20,12 @@ public class WorldPacket extends Packet {
         super(opcode.getRawValue(), size);
         
         body.order(ByteOrder.LITTLE_ENDIAN);
+    }
+    
+    public final void putPosition(Vec4 position) {
+        putFloat(position.x);
+        putFloat(position.y);
+        putFloat(position.z);
+        putFloat(position.o);
     }
 }

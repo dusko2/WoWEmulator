@@ -5,7 +5,13 @@
  */
 package wowemulator.player.character;
 
+import wowemulator.WoWEmulator;
+import wowemulator.movement.enums.MovementFlag;
+import wowemulator.movement.enums.MovementFlagExtra;
+import wowemulator.movement.MovementInfo;
+import wowemulator.object.update.UpdateType;
 import wowemulator.utils.Vec4;
+import wowemulator.world.packet.WorldPacket;
 
 /**
  *
@@ -33,6 +39,8 @@ public class PlayerCharacter {
     
     private int guildID;
     
+    private final MovementInfo movementInfo = new MovementInfo();
+    
     public PlayerCharacter(long guid, CharacterCreateInfo characterCreateInfo) {
         this.guid = guid;
         this.level = 1;
@@ -46,6 +54,45 @@ public class PlayerCharacter {
         this.hairStyle = characterCreateInfo.hairStyle;
         this.hairColor = characterCreateInfo.hairColor;
         this.facialHair = characterCreateInfo.facialHair;
+    }
+    
+    public final void buildCreateUpdateBlock(WorldPacket packet, boolean newObject) {
+        UpdateType updateType = newObject ? UpdateType.CreateObject2 : UpdateType.CreateObject;
+    }
+    
+    public final void buildMovementPacket(WorldPacket packet) {
+        packet.putInt(movementInfo.movementFlags.flags);
+        packet.putShort(movementInfo.movementFlagsExtra.flags);
+        packet.putInt((int)WoWEmulator.serverStartTime);
+        packet.putPosition(position);
+        
+        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.OnTransport)) {
+            
+            
+            if (movementInfo.movementFlagsExtra.hasMovementFlagExtra(MovementFlagExtra.InterpolatedMovement)) {
+                
+            }
+        }
+        
+        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.Swimming) ||
+            movementInfo.movementFlags.hasMovementFlag(MovementFlag.Flying) ||
+            movementInfo.movementFlagsExtra.hasMovementFlagExtra(MovementFlagExtra.AlwaysAllowPitching)) {
+            
+            packet.putFloat(movementInfo.pitch);
+        }
+        
+        packet.putInt(movementInfo.fallTime);
+        
+        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.Falling)) {
+            packet.putFloat(movementInfo.jump.zSpeed);
+            packet.putFloat(movementInfo.jump.sinAngle);
+            packet.putFloat(movementInfo.jump.cosAngle);
+            packet.putFloat(movementInfo.jump.xySpeed);
+        }
+        
+        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.SplineElevation)) {
+            packet.putFloat((movementInfo.splineElevation));
+        }
     }
 
     public byte getLevel() {

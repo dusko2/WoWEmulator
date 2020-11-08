@@ -16,6 +16,8 @@ import wowemulator.world.WorldServer;
  */
 public class WoWEmulator {
 
+    public static final long serverStartTime = System.currentTimeMillis();
+    
     public static void main(String[] args) {
         startLogonServer();
         startWorldServers();
