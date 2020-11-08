@@ -40,18 +40,19 @@ public class CharacterEnumHandler implements WorldOpcodeHandler {
             response.putByte(character.facialHair);
             response.putByte(character.getLevel());
             
-            response.putInt(0); // Zone ID
-            response.putInt(0); // Map ID
-            response.putFloat(0); // x
-            response.putFloat(0); // y
-            response.putFloat(0); // z
+            response.putInt(character.getZoneID()); // Zone ID
+            response.putInt(character.getMapID()); // Map ID
+            response.putFloat(character.position.x); // x
+            response.putFloat(character.position.y); // y
+            response.putFloat(character.position.z); // z
             
-            response.putInt(0); // Guild ID
+            response.putInt(character.getGuildID()); // Guild ID
             
             response.putInt(0); // Character flags
             response.putInt(0); // Customize flags
-            response.putByte((byte)0); // First login?
+            response.putByte((byte)0); // First login?, move to database
             
+            // Only for hunters and warlocks
             response.putInt(0); // Pet displayID
             response.putInt(0); // Pet level
             response.putInt(0); // Pet familiyID

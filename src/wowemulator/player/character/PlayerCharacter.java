@@ -5,6 +5,8 @@
  */
 package wowemulator.player.character;
 
+import wowemulator.utils.Vec4;
+
 /**
  *
  * @author Dusko
@@ -12,7 +14,6 @@ package wowemulator.player.character;
 public class PlayerCharacter {
 
     public final long guid;
-    private byte level;
     
     public final String name;
     public final byte race;
@@ -23,6 +24,14 @@ public class PlayerCharacter {
     public final byte hairStyle;
     public final byte hairColor;
     public final byte facialHair;
+    
+    private final byte level;
+    
+    private final int zoneID = 0;
+    private final int mapID = 1;
+    public final Vec4 position = new Vec4(1, 1, 50, 1);
+    
+    private int guildID;
     
     public PlayerCharacter(long guid, CharacterCreateInfo characterCreateInfo) {
         this.guid = guid;
@@ -41,5 +50,17 @@ public class PlayerCharacter {
 
     public byte getLevel() {
         return level;
+    }
+
+    public int getZoneID() {
+        return zoneID;
+    }
+
+    public int getMapID() {
+        return mapID;
+    }
+
+    public int getGuildID() {
+        return guildID;
     }
 }

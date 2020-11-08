@@ -13,6 +13,7 @@ import wowemulator.world.handler.AuthProofHandler;
 import wowemulator.world.handler.CharacterCreateHandler;
 import wowemulator.world.handler.CharacterEnumHandler;
 import wowemulator.world.handler.PingHandler;
+import wowemulator.world.handler.PlayerLoginHandler;
 import wowemulator.world.handler.ReadyForAccountDataTimesHandler;
 import wowemulator.world.handler.RealmSplitHandler;
 
@@ -31,9 +32,14 @@ public class WorldOpcodeTable {
         opcodeTable.put(WorldOpcode.CmsgPing,                     new PingHandler());
         opcodeTable.put(WorldOpcode.CmsgReadyForAccountDataTimes, new ReadyForAccountDataTimesHandler());
         opcodeTable.put(WorldOpcode.CmsgCharCreate,               new CharacterCreateHandler());
+        opcodeTable.put(WorldOpcode.CmsgPlayerLogin,              new PlayerLoginHandler());
     }
     
     public final void handle(WorldOpcode opcode, WorldSession session, Packet packet) {
+        if (opcode.status == WorldOpcodeStatus.Inactive) {
+            return;
+        }
+        
         System.out.println(">> Handling -> [" + opcode.name() + "]");
         opcodeTable.get(opcode).handle(session, packet);
     }
