@@ -5,7 +5,6 @@
  */
 package wowemulator.world.handler;
 
-import java.nio.ByteOrder;
 import wowemulator.networking.packet.Packet;
 import wowemulator.world.WorldOpcode;
 import wowemulator.world.WorldPacket;
@@ -23,8 +22,6 @@ public class CharacterEnumHandler implements WorldOpcodeHandler {
         // create(Opcodes.SMSG_CHAR_ENUM, 350 * characterCount + 10);
         
         WorldPacket response = new WorldPacket(WorldOpcode.SmsgCharEnum, 350 * characterCount + 10);
-        response.body.order(ByteOrder.LITTLE_ENDIAN);
-
         response.putByte((byte)characterCount);
 
         for (int atChar = 0; atChar < characterCount; atChar++) {

@@ -10,6 +10,7 @@ import java.util.Map;
 import wowemulator.networking.packet.Packet;
 import wowemulator.world.handler.AuthProofHandler;
 import wowemulator.world.handler.CharacterEnumHandler;
+import wowemulator.world.handler.PingHandler;
 import wowemulator.world.handler.RealmSplitHandler;
 import wowemulator.world.handler.WorldOpcodeHandler;
 
@@ -25,10 +26,11 @@ public class WorldOpcodeTable {
         opcodeTable.put(WorldOpcode.CmsgAuthProof,       new AuthProofHandler());
         opcodeTable.put(WorldOpcode.CmsgCharEnum,        new CharacterEnumHandler());
         opcodeTable.put(WorldOpcode.CmsgRealmSplit,      new RealmSplitHandler());
+        opcodeTable.put(WorldOpcode.CmsgPing,            new PingHandler());
     }
     
     public final void handle(WorldOpcode opcode, WorldSession session, Packet packet) {
-        System.out.println(opcode.name());
+        System.out.println(">> Handling -> [" + opcode.name() + "]");
         opcodeTable.get(opcode).handle(session, packet);
     }
 }

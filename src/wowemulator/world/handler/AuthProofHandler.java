@@ -51,8 +51,6 @@ public class AuthProofHandler implements WorldOpcodeHandler {
         session.initCrypt(client.getSessionKey());
         
         WorldPacket response = new WorldPacket(WorldOpcode.SmsgAuthResponse, 80);
-        response.body.order(ByteOrder.LITTLE_ENDIAN);
-        
         response.putByte((byte)0x0C);
         response.putByte((byte)0x30);
         response.putByte((byte)0x78);

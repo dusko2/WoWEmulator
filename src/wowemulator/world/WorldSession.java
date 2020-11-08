@@ -57,7 +57,6 @@ public class WorldSession implements TCPConnectionDelegate {
     
     public final void sendAuthChallenge() {
         WorldPacket packet = new WorldPacket(WorldOpcode.SmsgAuthChallenge, 50);
-        packet.body.order(ByteOrder.LITTLE_ENDIAN);
         authSeed = new SecureRandom().generateSeed(4);
         
         packet.putInt(1);

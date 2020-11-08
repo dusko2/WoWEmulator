@@ -5,6 +5,7 @@
  */
 package wowemulator.world;
 
+import java.nio.ByteOrder;
 import wowemulator.networking.packet.Packet;
 
 /**
@@ -15,5 +16,7 @@ public class WorldPacket extends Packet {
 
     public WorldPacket(WorldOpcode opcode, int size) {
         super(opcode.getRawValue(), size);
+        
+        body.order(ByteOrder.LITTLE_ENDIAN);
     }
 }
