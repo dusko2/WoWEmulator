@@ -21,7 +21,8 @@ public enum WorldOpcode {
     SmsgAuthChallenge  (0x01EC),
     SmsgAuthResponse   (0x01EE),
     SmsgCharEnum       (0x003B),
-    SmsgPong           (0x01DD);
+    SmsgPong           (0x01DD),
+    SmsgRealmSplit     (0x038B);
     
     private final int rawValue;
 

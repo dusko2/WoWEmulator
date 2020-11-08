@@ -24,5 +24,6 @@ public class PingHandler implements WorldOpcodeHandler {
         
         WorldPacket response = new WorldPacket(WorldOpcode.SmsgPong, 4);
         response.putByte((byte)pingAmount);
+        session.send(packet);
     }
 }
