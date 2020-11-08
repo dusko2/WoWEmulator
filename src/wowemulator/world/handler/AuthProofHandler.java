@@ -5,7 +5,6 @@
  */
 package wowemulator.world.handler;
 
-import java.nio.ByteOrder;
 import java.security.MessageDigest;
 import wowemulator.client.Client;
 import wowemulator.logon.LogonServer;
@@ -50,7 +49,7 @@ public class AuthProofHandler implements WorldOpcodeHandler {
         
         session.initCrypt(client.getSessionKey());
         
-        WorldPacket response = new WorldPacket(WorldOpcode.SmsgAuthResponse, 80);
+        WorldPacket response = new WorldPacket(WorldOpcode.SmsgAuthResponse, 1 + 1 + 1 + 8);
         response.putByte((byte)0x0C);
         response.putByte((byte)0x30);
         response.putByte((byte)0x78);

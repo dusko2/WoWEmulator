@@ -21,7 +21,7 @@ public class CharacterEnumHandler implements WorldOpcodeHandler {
         int characterCount = 0;
         // create(Opcodes.SMSG_CHAR_ENUM, 350 * characterCount + 10);
         
-        WorldPacket response = new WorldPacket(WorldOpcode.SmsgCharEnum, 350 * characterCount + 10);
+        WorldPacket response = new WorldPacket(WorldOpcode.SmsgCharEnum, 1);
         response.putByte((byte)characterCount);
 
         for (int atChar = 0; atChar < characterCount; atChar++) {
