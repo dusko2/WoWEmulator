@@ -13,6 +13,7 @@ import java.security.SecureRandom;
 import wowemulator.networking.client.TCPConnection;
 import wowemulator.networking.client.TCPConnectionDelegate;
 import wowemulator.networking.packet.Packet;
+import wowemulator.player.Player;
 import wowemulator.world.packet.AuthChallengePacket;
 
 /**
@@ -25,6 +26,8 @@ public class WorldSession implements TCPConnectionDelegate {
     private final byte[] authSeed = new SecureRandom().generateSeed(4);
     
     private final WorldOpcodeTable opcodeTable = new WorldOpcodeTable();
+    
+    public final Player player = new Player();
 
     public WorldSession(TCPConnection connection) {
         this.connection = connection;

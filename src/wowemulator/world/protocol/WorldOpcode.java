@@ -22,6 +22,7 @@ public enum WorldOpcode {
     CmsgRealmSplit              (0x038C),
     CmsgPing                    (0x01DC),
     CmsgReadyForAccountDataTimes(0x04FF),
+    CmsgCharCreate              (0x0036),
     
     /*
      * Server messages
@@ -31,7 +32,8 @@ public enum WorldOpcode {
     SmsgAuthResponse (0x01EE),
     SmsgCharEnum     (0x003B),
     SmsgPong         (0x01DD),
-    SmsgRealmSplit   (0x038B);
+    SmsgRealmSplit   (0x038B),
+    SmsgCharCreate   (0x003A);
     
     private final int rawValue;
     
