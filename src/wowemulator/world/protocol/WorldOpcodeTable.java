@@ -31,6 +31,10 @@ public class WorldOpcodeTable {
     }
     
     public final void handle(WorldOpcode opcode, WorldSession session, Packet packet) {
+        if (opcode == WorldOpcode.CmsgReadyForAccountDataTimes) {
+            return;
+        }
+        
         System.out.println(">> Handling -> [" + opcode.name() + "]");
         opcodeTable.get(opcode).handle(session, packet);
     }

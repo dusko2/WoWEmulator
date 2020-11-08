@@ -70,7 +70,6 @@ public class BigNumber{
         return this;
     }
     
-    
     public String toHexString(){
         return bigInteger.toString(16).toUpperCase();
     }
@@ -106,51 +105,51 @@ public class BigNumber{
     
     public String toASCII(){       
         String hex = bigInteger.toString(16).toUpperCase();
-          if(hex.length()%2 != 0){
-             System.err.println("requires EVEN number of chars");
-             return null;
-          }
-          StringBuilder sb = new StringBuilder();                
-          //Convert Hex 0232343536AB into two characters stream.
-          for( int i=0; i < hex.length()-1; i+=2 ){
-               /*
-                * Grab the hex in pairs
-                */
-              String output = hex.substring(i, (i + 2));
-              /*
-               * Convert Hex to Decimal
-               */
-              int decimal = Integer.parseInt(output, 16);                  
-              sb.append((char)decimal);              
-          }            
-          return sb.toString();
-    } 
-    
+        if(hex.length()%2 != 0){
+            System.err.println("requires EVEN number of chars");
+            return null;
+        }
+        
+        StringBuilder sb = new StringBuilder();                
+        //Convert Hex 0232343536AB into two characters stream.
+        for( int i=0; i < hex.length()-1; i+=2 ){
+            /*
+             * Grab the hex in pairs
+             */
+            String output = hex.substring(i, (i + 2));
+            /*
+             * Convert Hex to Decimal
+             */
+            int decimal = Integer.parseInt(output, 16);                  
+            sb.append((char)decimal);              
+        }            
+        return sb.toString();
+    }
     
     public void setBinary(byte[] array){
-		// Reverse array
-		int length = array.length;
-		for (int i = 0; i < length / 2; i++){
-	            byte j = array[i];
-	            array[i] = array[length - 1 - i];
-	            array[length - 1 - i] = j;
-		}
-			
-		// Add the first byte indicates the sign of the BigInteger
-		if (array[0] < 0){
-			byte[] tmp = new byte[array.length + 1];
-			System.arraycopy(array, 0, tmp, 1, array.length);
-			array = tmp;
-		}
-	        
-		bigInteger = new BigInteger(array);
+        // Reverse array
+        int length = array.length;
+        for (int i = 0; i < length / 2; i++){
+            byte j = array[i];
+            array[i] = array[length - 1 - i];
+            array[length - 1 - i] = j;
+        }
+
+        // Add the first byte indicates the sign of the BigInteger
+        if (array[0] < 0){
+            byte[] tmp = new byte[array.length + 1];
+            System.arraycopy(array, 0, tmp, 1, array.length);
+            array = tmp;
+        }
+
+        bigInteger = new BigInteger(array);
     }
     
     @Override
     public String toString(){
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         byte[] array = asByteArray();
-        result.append("(" + array.length + ")");
+        result.append("(").append(array.length).append(")");
         for (int i = 0; i < array.length; i++) {
             result.append(array[i]);
             result.append(" ");
@@ -159,9 +158,9 @@ public class BigNumber{
     }
     
     public String toCharString(){
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         byte[] array = asByteArray();
-        result.append("(" + array.length + ")");
+        result.append("(").append(array.length).append(")");
         for (int i = 0; i < array.length; i++) {
             result.append((char) array[i]);
             result.append(" ");
@@ -169,11 +168,15 @@ public class BigNumber{
         return result.toString();
     }
     
-     public byte[] getBytes(){
+    public byte[] getBytes(){
         return bigInteger.toByteArray();
-     }
-     
-     public boolean equals(BigNumber b){
-		return (b.toHexString().equals(this.toHexString()));
-     }
+    }
+
+    public boolean equals(BigNumber b){
+        return (b.toHexString().equals(this.toHexString()));
+    }
+    
+    public static byte[] randomBytes(int amount) {
+        return new BigNumber().setRand(amount).asByteArray(amount);
+    }
 }

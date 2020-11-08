@@ -38,6 +38,6 @@ public class RealmSplitHandler implements WorldOpcodeHandler {
         response.putInt(unknown);
         response.putInt(RealmSplitState.Normal.rawValue);
         response.putString(splitDate);
-        session.send(packet);
+        session.send(response);
     }
 }

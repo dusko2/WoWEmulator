@@ -9,12 +9,11 @@ import wowemulator.world.packet.WorldSessionPacketIO;
 import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.protocol.WorldOpcode;
 import wowemulator.world.protocol.WorldOpcodeTable;
-import java.nio.ByteOrder;
 import java.security.SecureRandom;
 import wowemulator.networking.client.TCPConnection;
 import wowemulator.networking.client.TCPConnectionDelegate;
 import wowemulator.networking.packet.Packet;
-import wowemulator.utils.BigNumber;
+import wowemulator.world.packet.AuthChallengePacket;
 
 /**
  *
@@ -23,14 +22,14 @@ import wowemulator.utils.BigNumber;
 public class WorldSession implements TCPConnectionDelegate {
 
     private final TCPConnection connection;
-    private byte[] authSeed;
+    private final byte[] authSeed = new SecureRandom().generateSeed(4);
     
     private final WorldOpcodeTable opcodeTable = new WorldOpcodeTable();
 
     public WorldSession(TCPConnection connection) {
         this.connection = connection;
+        this.connection.packetIO = new WorldSessionPacketIO(connection);
         
-        connection.packetIO = new WorldSessionPacketIO(connection);
         sendAuthChallenge();
     }
     
@@ -39,7 +38,7 @@ public class WorldSession implements TCPConnectionDelegate {
         connection.start();
     }
     
-    public final void send(Packet packet) {
+    public final void send(WorldPacket packet) {
         connection.sendPacket(packet);
     }
     
@@ -52,21 +51,16 @@ public class WorldSession implements TCPConnectionDelegate {
     public void didReceivePacket(TCPConnection connection, Packet packet) {
         WorldOpcode opcode = WorldOpcode.get(packet.rawOpcode);
         if (opcode == null) {
-            System.out.println("Received unknown opcode: " + packet.rawOpcode);
+            System.out.println(">> Received unknown opcode: " + packet.rawOpcode);
             return;
         }
         
         opcodeTable.handle(opcode, this, packet);
     }
     
-    public final void sendAuthChallenge() {
-        WorldPacket packet = new WorldPacket(WorldOpcode.SmsgAuthChallenge, 50);
-        authSeed = new SecureRandom().generateSeed(4);
-        
-        packet.putInt(1);
-        packet.putBytes(authSeed);
-        packet.putBytes(new BigNumber().setRand(32).asByteArray(32));
-        connection.sendPacket(packet.wrap());
+    private void sendAuthChallenge() {
+        AuthChallengePacket packet = new AuthChallengePacket(authSeed);
+        send(packet);
     }
 
     public byte[] getAuthSeed() {

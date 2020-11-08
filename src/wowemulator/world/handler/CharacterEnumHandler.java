@@ -90,6 +90,6 @@ public class CharacterEnumHandler implements WorldOpcodeHandler {
 //                putInt(0); // enchant?
         }
 
-        session.send(response.wrap());
+        session.send(response);
     }
 }
