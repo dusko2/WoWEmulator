@@ -5,7 +5,7 @@
  */
 package wowemulator.movement;
 
-import wowemulator.utils.Vec4;
+import wowlib.utils.Vec4;
 
 /**
  *

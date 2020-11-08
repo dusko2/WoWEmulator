@@ -9,12 +9,12 @@ import wowemulator.world.protocol.WorldOpcodeHandler;
 import java.security.MessageDigest;
 import wowemulator.client.Client;
 import wowemulator.logon.LogonServer;
-import wowemulator.networking.packet.Packet;
-import wowemulator.utils.BigNumber;
-import wowemulator.utils.HashUtils;
 import wowemulator.world.protocol.WorldOpcode;
 import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.WorldSession;
+import wowlib.networking.packet.Packet;
+import wowlib.utils.BigNumber;
+import wowlib.utils.HashUtils;
 
 /**
  *

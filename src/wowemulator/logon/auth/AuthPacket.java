@@ -6,7 +6,7 @@
 package wowemulator.logon.auth;
 
 import java.nio.ByteOrder;
-import wowemulator.networking.packet.Packet;
+import wowlib.networking.packet.Packet;
 
 /**
  *

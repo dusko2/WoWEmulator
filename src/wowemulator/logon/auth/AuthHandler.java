@@ -8,13 +8,13 @@ package wowemulator.logon.auth;
 import wowemulator.logon.LogonSession;
 import java.security.MessageDigest;
 import javax.xml.bind.DatatypeConverter;
-import wowemulator.utils.HashUtils;
 import wowemulator.client.Client;
 import wowemulator.client.ClientInfo;
 import wowemulator.realm.Realm;
 import wowemulator.realm.Realmlist;
-import wowemulator.networking.packet.Packet;
-import wowemulator.utils.BigNumber;
+import wowlib.networking.packet.Packet;
+import wowlib.utils.BigNumber;
+import wowlib.utils.HashUtils;
 
 /**
  *

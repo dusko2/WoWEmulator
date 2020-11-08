@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import wowemulator.logon.LogonSession;
-import wowemulator.networking.client.PacketIO;
-import wowemulator.networking.client.TCPConnection;
-import wowemulator.networking.packet.Packet;
-import wowemulator.networking.packet.PacketHeader;
+import wowlib.networking.client.PacketIO;
+import wowlib.networking.client.TCPConnection;
+import wowlib.networking.packet.Packet;
+import wowlib.networking.packet.PacketHeader;
 
 /**
  *

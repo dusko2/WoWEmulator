@@ -10,11 +10,11 @@ import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.protocol.WorldOpcode;
 import wowemulator.world.protocol.WorldOpcodeTable;
 import java.security.SecureRandom;
-import wowemulator.networking.client.TCPConnection;
-import wowemulator.networking.client.TCPConnectionDelegate;
-import wowemulator.networking.packet.Packet;
 import wowemulator.player.Player;
 import wowemulator.world.packet.AuthChallengePacket;
+import wowlib.networking.client.TCPConnection;
+import wowlib.networking.client.TCPConnectionDelegate;
+import wowlib.networking.packet.Packet;
 
 /**
  *
@@ -50,8 +50,7 @@ public class WorldSession implements TCPConnectionDelegate {
         packetIO.initCrypt(sessionKey);
     }
     
-    @Override
-    public void didReceivePacket(TCPConnection connection, Packet packet) {
+    @Override public void didReceivePacket(TCPConnection connection, Packet packet) {
         WorldOpcode opcode = WorldOpcode.get(packet.rawOpcode);
         if (opcode == null) {
             System.out.println(">> Received unknown opcode: " + packet.rawOpcode);

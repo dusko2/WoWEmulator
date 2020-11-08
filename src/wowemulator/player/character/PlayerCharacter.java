@@ -10,8 +10,8 @@ import wowemulator.movement.enums.MovementFlag;
 import wowemulator.movement.enums.MovementFlagExtra;
 import wowemulator.movement.MovementInfo;
 import wowemulator.object.update.UpdateType;
-import wowemulator.utils.Vec4;
 import wowemulator.world.packet.WorldPacket;
+import wowlib.utils.Vec4;
 
 /**
  *

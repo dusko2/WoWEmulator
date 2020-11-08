@@ -5,8 +5,8 @@
  */
 package wowemulator.world.protocol;
 
-import wowemulator.networking.packet.Packet;
 import wowemulator.world.WorldSession;
+import wowlib.networking.packet.Packet;
 
 /**
  *

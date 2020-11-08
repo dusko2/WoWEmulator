@@ -8,9 +8,9 @@ package wowemulator.logon;
 import wowemulator.logon.auth.AuthHandler;
 import wowemulator.client.Client;
 import wowemulator.logon.auth.AuthPacketIO;
-import wowemulator.networking.client.TCPConnectionDelegate;
-import wowemulator.networking.client.TCPConnection;
-import wowemulator.networking.packet.Packet;
+import wowlib.networking.client.TCPConnection;
+import wowlib.networking.client.TCPConnectionDelegate;
+import wowlib.networking.packet.Packet;
 
 /**
  *

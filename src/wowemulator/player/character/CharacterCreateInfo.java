@@ -5,7 +5,7 @@
  */
 package wowemulator.player.character;
 
-import wowemulator.networking.packet.Packet;
+import wowlib.networking.packet.Packet;
 
 /**
  *

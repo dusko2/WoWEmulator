@@ -5,13 +5,13 @@
  */
 package wowemulator.world.handler;
 
-import wowemulator.networking.packet.Packet;
 import wowemulator.player.character.PlayerCharacter;
-import wowemulator.utils.Vec4;
 import wowemulator.world.WorldSession;
 import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.protocol.WorldOpcode;
 import wowemulator.world.protocol.WorldOpcodeHandler;
+import wowlib.networking.packet.Packet;
+import wowlib.utils.Vec4;
 
 /**
  *
@@ -35,10 +35,7 @@ public class PlayerLoginHandler implements WorldOpcodeHandler {
     private void sendLoginVerifyWorldPacket(WorldSession session, PlayerCharacter character) {
         WorldPacket packet = new WorldPacket(WorldOpcode.SmsgLoginVerifyWorld, 4 + Vec4.BYTES);
         packet.putInt(character.getMapID());
-        packet.putFloat(character.position.x);
-        packet.putFloat(character.position.y);
-        packet.putFloat(character.position.z);
-        packet.putFloat(character.position.o);
+        packet.putPosition(character.position);
         session.send(packet);
     }
 }

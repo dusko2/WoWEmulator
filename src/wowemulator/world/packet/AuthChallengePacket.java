@@ -5,8 +5,8 @@
  */
 package wowemulator.world.packet;
 
-import wowemulator.utils.BigNumber;
 import wowemulator.world.protocol.WorldOpcode;
+import wowlib.utils.BigNumber;
 
 /**
  *

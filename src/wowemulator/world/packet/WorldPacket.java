@@ -7,8 +7,8 @@ package wowemulator.world.packet;
 
 import wowemulator.world.protocol.WorldOpcode;
 import java.nio.ByteOrder;
-import wowemulator.networking.packet.Packet;
-import wowemulator.utils.Vec4;
+import wowlib.networking.packet.Packet;
+import wowlib.utils.Vec4;
 
 /**
  *

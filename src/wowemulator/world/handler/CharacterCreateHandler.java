@@ -6,13 +6,13 @@
 package wowemulator.world.handler;
 
 import wowemulator.logon.auth.AuthCodes;
-import wowemulator.networking.packet.Packet;
 import wowemulator.player.character.CharacterCreateInfo;
 import wowemulator.player.character.PlayerCharacter;
 import wowemulator.world.WorldSession;
 import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.protocol.WorldOpcode;
 import wowemulator.world.protocol.WorldOpcodeHandler;
+import wowlib.networking.packet.Packet;
 
 /**
  *
@@ -26,10 +26,6 @@ public class CharacterCreateHandler implements WorldOpcodeHandler {
         
         PlayerCharacter character = new PlayerCharacter(10000, characterInfo);
         session.player.createdNewCharacter(character);
-        
-//        WorldPacket response = new WorldPacket(WorldOpcode.SmsgCharCreate, 1);
-//        response.putByte((byte)0x31);
-//        session.send(response);
         
         WorldPacket pkt = new WorldPacket(WorldOpcode.SmsgCharCreate, 1);
         pkt.putByte(AuthCodes.CharacterCreateSuccess.rawValue);

@@ -7,7 +7,6 @@ package wowemulator.world.protocol;
 
 import java.util.HashMap;
 import java.util.Map;
-import wowemulator.networking.packet.Packet;
 import wowemulator.world.WorldSession;
 import wowemulator.world.handler.AuthProofHandler;
 import wowemulator.world.handler.CharacterCreateHandler;
@@ -16,6 +15,7 @@ import wowemulator.world.handler.PingHandler;
 import wowemulator.world.handler.PlayerLoginHandler;
 import wowemulator.world.handler.ReadyForAccountDataTimesHandler;
 import wowemulator.world.handler.RealmSplitHandler;
+import wowlib.networking.packet.Packet;
 
 /**
  *

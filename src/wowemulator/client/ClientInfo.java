@@ -5,7 +5,7 @@
  */
 package wowemulator.client;
 
-import wowemulator.networking.packet.Packet;
+import wowlib.networking.packet.Packet;
 
 /**
  *

@@ -6,10 +6,10 @@
 package wowemulator.world.handler;
 
 import wowemulator.world.protocol.WorldOpcodeHandler;
-import wowemulator.networking.packet.Packet;
 import wowemulator.world.protocol.WorldOpcode;
 import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.WorldSession;
+import wowlib.networking.packet.Packet;
 
 /**
  *
@@ -30,8 +30,7 @@ public class RealmSplitHandler implements WorldOpcodeHandler {
         }
     }
     
-    @Override
-    public void handle(WorldSession session, Packet packet) {
+    @Override public void handle(WorldSession session, Packet packet) {
         int unknown = packet.getInt();
         String splitDate = "01/01/01";
         

@@ -8,9 +8,9 @@ package wowemulator.logon;
 import java.util.LinkedList;
 import java.util.List;
 import wowemulator.client.Client;
-import wowemulator.networking.client.TCPConnection;
-import wowemulator.networking.server.TCPServer;
-import wowemulator.networking.server.TCPServerDelegate;
+import wowlib.networking.client.TCPConnection;
+import wowlib.networking.server.TCPServer;
+import wowlib.networking.server.TCPServerDelegate;
 
 /**
  *
