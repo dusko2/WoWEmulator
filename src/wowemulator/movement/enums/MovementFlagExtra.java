@@ -5,11 +5,13 @@
  */
 package wowemulator.movement.enums;
 
+import wowlib.utils.flag.BaseFlag;
+
 /**
  *
  * @author Dusko
  */
-public enum MovementFlagExtra {
+public enum MovementFlagExtra implements BaseFlag<Short> {
 
     None                (0x00000000),
     NoStrafe            (0x00000001),
@@ -29,9 +31,13 @@ public enum MovementFlagExtra {
     Unknown15           (0x00004000),
     Unknown16           (0x00008000);
     
-    public final short rawValue;
+    private final short rawValue;
 
     private MovementFlagExtra(int rawValue) {
         this.rawValue = (short)rawValue;
+    }
+
+    @Override public Short rawValue() {
+        return rawValue;
     }
 }

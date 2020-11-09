@@ -5,11 +5,15 @@
  */
 package wowemulator.object.update;
 
+import wowlib.utils.flag.BaseFlags;
+
 /**
  *
  * @author Dusko
  */
-public class UpdateFlags {
+public class UpdateFlags extends BaseFlags<UpdateFlag> {
 
-    
+    public UpdateFlags() {
+        flags = UpdateFlag.None.rawValue();
+    }
 }

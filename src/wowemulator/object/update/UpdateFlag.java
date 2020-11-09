@@ -5,11 +5,13 @@
  */
 package wowemulator.object.update;
 
+import wowlib.utils.flag.BaseFlag;
+
 /**
  *
  * @author Dusko
  */
-public enum UpdateFlag {
+public enum UpdateFlag implements BaseFlag<Short> {
 
     None              (0x0000),
     Self              (0x0001),
@@ -23,9 +25,13 @@ public enum UpdateFlag {
     Position          (0x0100),
     Rotation          (0x0200);
     
-    public final short rawValue;
+    private final short rawValue;
 
     private UpdateFlag(int rawValue) {
         this.rawValue = (short)rawValue;
+    }
+
+    @Override public Short rawValue() {
+        return rawValue;
     }
 }

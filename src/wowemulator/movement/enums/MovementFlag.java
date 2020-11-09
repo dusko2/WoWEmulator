@@ -5,11 +5,13 @@
  */
 package wowemulator.movement.enums;
 
+import wowlib.utils.flag.BaseFlag;
+
 /**
  *
  * @author Dusko
  */
-public enum MovementFlag {
+public enum MovementFlag implements BaseFlag<Integer> {
 
     None              (0x00000000),
     Forward           (0x00000001),
@@ -44,9 +46,13 @@ public enum MovementFlag {
     FallingSlow       (0x20000000),
     Hover             (0x40000000);
     
-    public final int rawValue;
+    private final int rawValue;
     
     private MovementFlag(int rawValue) {
         this.rawValue = rawValue;
+    }
+
+    @Override public Integer rawValue() {
+        return rawValue;
     }
 }

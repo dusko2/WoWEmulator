@@ -9,6 +9,8 @@ import wowemulator.WoWEmulator;
 import wowemulator.movement.enums.MovementFlag;
 import wowemulator.movement.enums.MovementFlagExtra;
 import wowemulator.movement.MovementInfo;
+import wowemulator.object.update.UpdateFlag;
+import wowemulator.object.update.UpdateFlags;
 import wowemulator.object.update.UpdateType;
 import wowemulator.world.packet.WorldPacket;
 import wowlib.utils.Vec4;
@@ -39,6 +41,7 @@ public class PlayerCharacter {
     
     private int guildID;
     
+    private final UpdateFlags updateFlags = new UpdateFlags();
     private final MovementInfo movementInfo = new MovementInfo();
     
     public PlayerCharacter(long guid, CharacterCreateInfo characterCreateInfo) {
@@ -56,41 +59,55 @@ public class PlayerCharacter {
         this.facialHair = characterCreateInfo.facialHair;
     }
     
-    public final void buildCreateUpdateBlock(WorldPacket packet, boolean newObject) {
+    public final void buildCreateUpdateBlock(WorldPacket packet, boolean newObject, PlayerCharacter target) {
         UpdateType updateType = newObject ? UpdateType.CreateObject2 : UpdateType.CreateObject;
+        
+        if (target == this) {
+            updateFlags.add(UpdateFlag.Self);
+        }
+        
+        packet.putByte(updateType.rawValue);
+        packet.putPackGUID(guid);
+        packet.putByte((byte)4); // Player = 4
+        
+        buildMovementPacket(packet);
+    }
+    
+    public final void buildMovementUpdate(WorldPacket packet) {
+        
     }
     
     public final void buildMovementPacket(WorldPacket packet) {
-        packet.putInt(movementInfo.movementFlags.flags);
-        packet.putShort(movementInfo.movementFlagsExtra.flags);
+        packet.putInt(movementInfo.movementFlags.intValue());
+        packet.putShort(movementInfo.movementFlagsExtra.shortValue());
         packet.putInt((int)WoWEmulator.serverStartTime);
         packet.putPosition(position);
         
-        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.OnTransport)) {
+        if (movementInfo.movementFlags.contains(MovementFlag.OnTransport)) {
             
             
-            if (movementInfo.movementFlagsExtra.hasMovementFlagExtra(MovementFlagExtra.InterpolatedMovement)) {
+            if (movementInfo.movementFlagsExtra.contains(MovementFlagExtra.InterpolatedMovement)) {
                 
             }
         }
         
-        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.Swimming) ||
-            movementInfo.movementFlags.hasMovementFlag(MovementFlag.Flying) ||
-            movementInfo.movementFlagsExtra.hasMovementFlagExtra(MovementFlagExtra.AlwaysAllowPitching)) {
+        if (movementInfo.movementFlags.contains(MovementFlag.Swimming) ||
+            movementInfo.movementFlags.contains(MovementFlag.Flying) ||
+            movementInfo.movementFlagsExtra.contains(MovementFlagExtra.AlwaysAllowPitching)) {
             
             packet.putFloat(movementInfo.pitch);
         }
         
         packet.putInt(movementInfo.fallTime);
         
-        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.Falling)) {
+        if (movementInfo.movementFlags.contains(MovementFlag.Falling)) {
             packet.putFloat(movementInfo.jump.zSpeed);
             packet.putFloat(movementInfo.jump.sinAngle);
             packet.putFloat(movementInfo.jump.cosAngle);
             packet.putFloat(movementInfo.jump.xySpeed);
         }
         
-        if (movementInfo.movementFlags.hasMovementFlag(MovementFlag.SplineElevation)) {
+        if (movementInfo.movementFlags.contains(MovementFlag.SplineElevation)) {
             packet.putFloat((movementInfo.splineElevation));
         }
     }

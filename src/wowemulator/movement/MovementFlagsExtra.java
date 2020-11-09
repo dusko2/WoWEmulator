@@ -6,32 +6,12 @@
 package wowemulator.movement;
 
 import wowemulator.movement.enums.MovementFlagExtra;
+import wowlib.utils.flag.BaseFlags;
 
 /**
  *
  * @author Dusko
  */
-public class MovementFlagsExtra {
+public class MovementFlagsExtra extends BaseFlags<MovementFlagExtra> {
 
-    public short flags;
-
-    public MovementFlagsExtra() {
-        this.flags = 0;
-    }
-
-    public MovementFlagsExtra(short flags) {
-        this.flags = flags;
-    }
-    
-    public final void addMovementFlagExtra(MovementFlagExtra movementFlagExtra) {
-        flags |= movementFlagExtra.rawValue;
-    }
-    
-    public final void removeMovementFlatExtra(MovementFlagExtra movementFlagExtra) {
-        flags &= ~movementFlagExtra.rawValue;
-    }
-    
-    public final boolean hasMovementFlagExtra(MovementFlagExtra movementFlagExtra) {
-        return (flags & movementFlagExtra.rawValue) != 0;
-    }
 }
