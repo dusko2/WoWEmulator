@@ -23,6 +23,6 @@ public class LogDisconnectHandler implements WorldOpcodeHandler {
         int disconnectReason = packet.getInt();
         System.out.println(">> Disconnect reason " + disconnectReason);
 
-        //session.stop();
+        session.stop();
     }
 }

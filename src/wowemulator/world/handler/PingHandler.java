@@ -17,14 +17,12 @@ import wowemulator.world.WorldSession;
  */
 public class PingHandler implements WorldOpcodeHandler {
 
-    private int pingAmount = 0;
+    @Override public void handle(WorldSession session, Packet packet) {
+        int ping = packet.getInt();
+        int latency = packet.getInt();
 
-    @Override
-    public void handle(WorldSession session, Packet packet) {
-        pingAmount++;
-        
         WorldPacket response = new WorldPacket(WorldOpcode.SmsgPong, 4);
-        response.putByte((byte)pingAmount);
+        response.putInt(ping);
         session.send(response);
     }
 }

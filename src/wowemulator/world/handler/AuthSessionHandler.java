@@ -29,7 +29,9 @@ import wowemulator.realm.RealmRace;
 import wowemulator.realm.Realmlist;
 import wowemulator.utils.BitPack;
 import wowemulator.utils.BitUnpack;
+import wowemulator.utils.ByteBufferUtils;
 import wowemulator.utils.HashUtils;
+import wowemulator.utils.ZLibUtils;
 import wowemulator.world.WorldSession;
 import wowemulator.world.packet.WorldPacket;
 import wowemulator.world.protocol.WorldOpcode;
@@ -105,20 +107,7 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
             ByteBuffer addonData = addonDataBuffer();
             int size = addonData.getInt();
 
-            ByteBuffer decompressed = ByteBuffer.allocate(size);
-            decompressed.order(ByteOrder.LITTLE_ENDIAN);
-
-            try (InputStream decompressor = new InflaterInputStream(new ByteArrayInputStream(addonData.array(), addonData.position(), addonData.capacity() - addonData.position()))) {
-                byte[] decompressedData = new byte[size];
-                decompressor.read(decompressedData);
-
-                decompressed.put(decompressedData);
-            } catch (IOException ex) {
-                Logger.getLogger(AuthSessionHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            decompressed.position(0);
-            return decompressed;
+            return ZLibUtils.decompress(addonData.array(), addonData.position(), addonData.capacity() - addonData.position(), size);
         }
 
         public List<AddonInfo> getAddonInfo() {
@@ -128,7 +117,7 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
             int addonCount = addonData.getInt();
 
             for (int i = 0; i < addonCount; i++) {
-                String name = getString(addonData);
+                String name = ByteBufferUtils.getString(addonData);
                 boolean usingPubKey = addonData.get() >= 1;
                 int crc = addonData.getInt();
                 int urlFile = addonData.getInt();
@@ -138,18 +127,6 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
             }
 
             return list;
-        }
-
-        private String getString(ByteBuffer buffer) {
-            StringBuilder builder = new StringBuilder();
-
-            byte value = buffer.get();
-            while (value != 0) {
-                builder.append((char)value);
-                value = buffer.get();
-            }
-
-            return builder.toString();
         }
     }
 

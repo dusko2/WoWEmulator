@@ -9,15 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 import wowemulator.networking.packet.Packet;
 import wowemulator.world.WorldSession;
-import wowemulator.world.handler.AuthProofHandler;
 import wowemulator.world.handler.AuthSessionHandler;
-import wowemulator.world.handler.CharacterCreateHandler;
-import wowemulator.world.handler.CharacterEnumHandler;
+import wowemulator.world.handler.EnumCharactersHandler;
 import wowemulator.world.handler.LogDisconnectHandler;
 import wowemulator.world.handler.PingHandler;
-import wowemulator.world.handler.PlayerLoginHandler;
 import wowemulator.world.handler.ReadyForAccountDataTimesHandler;
-import wowemulator.world.handler.RealmSplitHandler;
+import wowemulator.world.handler.UpdateAccountDataHandler;
 import wowemulator.world.handler.VerifyConnectivityHandler;
 
 /**
@@ -31,16 +28,12 @@ public class WorldOpcodeTable {
     public WorldOpcodeTable() {
         opcodeTable.put(WorldOpcode.MsgVerifyConnectivity, new VerifyConnectivityHandler());
 
-        opcodeTable.put(WorldOpcode.CmsgAuthProof,                new AuthProofHandler());
-        opcodeTable.put(WorldOpcode.CmsgCharEnum,                 new CharacterEnumHandler());
-        opcodeTable.put(WorldOpcode.CmsgRealmSplit,               new RealmSplitHandler());
-        opcodeTable.put(WorldOpcode.CmsgPing,                     new PingHandler());
-        opcodeTable.put(WorldOpcode.CmsgReadyForAccountDataTimes, new ReadyForAccountDataTimesHandler());
-        opcodeTable.put(WorldOpcode.CmsgCharCreate,               new CharacterCreateHandler());
-        opcodeTable.put(WorldOpcode.CmsgPlayerLogin,              new PlayerLoginHandler());
-
         opcodeTable.put(WorldOpcode.CmsgLogDisconnect,            new LogDisconnectHandler());
         opcodeTable.put(WorldOpcode.CmsgAuthSession,              new AuthSessionHandler());
+        opcodeTable.put(WorldOpcode.CmsgReadyForAccountDataTimes, new ReadyForAccountDataTimesHandler());
+        opcodeTable.put(WorldOpcode.CmsgEnumCharacters,           new EnumCharactersHandler());
+        opcodeTable.put(WorldOpcode.CmsgPing,                     new PingHandler());
+        opcodeTable.put(WorldOpcode.CmsgUpdateAccountData,        new UpdateAccountDataHandler());
     }
 
     public final void handle(WorldOpcode opcode, WorldSession session, Packet packet) {

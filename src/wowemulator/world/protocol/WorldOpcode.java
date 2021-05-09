@@ -17,34 +17,28 @@ public enum WorldOpcode {
      * Client messages
      */
 
-    CmsgAuthProof               (0x01ED, WorldOpcodeStatus.Inactive), // 3.3.5
-    CmsgCharEnum                (0x0037, WorldOpcodeStatus.Inactive), // 3.3.5
-    CmsgRealmSplit              (0x038C, WorldOpcodeStatus.Inactive), // 3.3.5
-    CmsgPing                    (0x01DC, WorldOpcodeStatus.Inactive), // 3.3.5
-    CmsgReadyForAccountDataTimes(0x04FF, WorldOpcodeStatus.Inactive), // 3.3.5
-    CmsgCharCreate              (0x0036, WorldOpcodeStatus.Inactive), // 3.3.5
-    CmsgPlayerLogin             (0x003D, WorldOpcodeStatus.Inactive), // 3.3.5
-    CmsgSetActiveVoiceChannel   (0x03D3, WorldOpcodeStatus.Inactive), // 3.3.5
-
     CmsgAuthSession             (0x00B2, WorldOpcodeStatus.Active), // 5.4.8
     CmsgLogDisconnect           (0x10B3, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgReadyForAccountDataTimes(0x031C, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgEnumCharacters          (0x00E0, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgPing                    (0x0012, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgRealmSplit              (0x18B2, WorldOpcodeStatus.Inactive), // 5.4.8
+    CmsgUpdateAccountData       (0x0068, WorldOpcodeStatus.Active), // 5.4.8
 
     /*
      * Server messages
      */
 
-    SmsgAuthChallenge      (0x0949), // 5.4.8
-    SmsgAuthResponse       (0x0ABA), // 5.4.8
-    SmsgClientCacheVersion (0X002A), // 5.4.8
-    SmsgTutorialFlags      (0x1B90), // 5.4.8
-    SmsgTimezoneInformation(0x19C1), // 5.4.8
-    SmsgAddonInfo          (0x160A), // 5.4.8
+    SmsgAuthChallenge        (0x0949), // 5.4.8
+    SmsgAuthResponse         (0x0ABA), // 5.4.8
+    SmsgClientCacheVersion   (0X002A), // 5.4.8
+    SmsgTutorialFlags        (0x1B90), // 5.4.8
+    SmsgTimezoneInformation  (0x19C1), // 5.4.8
+    SmsgAddonInfo            (0x160A), // 5.4.8
+    SmsgAccountDataTimes     (0x162B), // 5.4.8
+    SmsgPong                 (0x1969), // 5.4.8
 
-    SmsgCharEnum        (0x003B), // 3.3.5
-    SmsgPong            (0x01DD), // 3.3.5
-    SmsgRealmSplit      (0x038B), // 3.3.5
-    SmsgCharCreate      (0x003A), // 3.3.5
-    SmsgLoginVerifyWorld(0x0236); // 3.3.5
+    SmsgUpdateAccountDataDone(0x0000); // Unknown
 
     private final int rawValue;
     public final WorldOpcodeStatus status;
