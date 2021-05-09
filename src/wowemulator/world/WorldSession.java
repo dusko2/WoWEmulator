@@ -14,7 +14,6 @@ import wowemulator.networking.client.TCPConnection;
 import wowemulator.networking.client.TCPConnectionDelegate;
 import wowemulator.networking.packet.Packet;
 import wowemulator.player.Player;
-import wowemulator.world.packet.AuthChallengePacket;
 
 /**
  *
@@ -23,50 +22,63 @@ import wowemulator.world.packet.AuthChallengePacket;
 public class WorldSession implements TCPConnectionDelegate {
 
     private final TCPConnection connection;
-    private final byte[] authSeed = new SecureRandom().generateSeed(4);
-    
+    public final byte[] authSeed = generateSeed();
+
     private final WorldOpcodeTable opcodeTable = new WorldOpcodeTable();
-    
+
     public final Player player = new Player();
 
     public WorldSession(TCPConnection connection) {
         this.connection = connection;
         this.connection.packetIO = new WorldSessionPacketIO(connection);
-        
-        sendAuthChallenge();
+
+        verifyConnectivity();
     }
-    
+
     public final void start() {
         connection.setDelegate(this);
         connection.start();
     }
-    
+
+    public final void stop() {
+        connection.setDelegate(null);
+        connection.stop();
+    }
+
     public final void send(WorldPacket packet) {
+        System.out.println(">> Sending " + packet.worldOpcode.name());
         connection.sendPacket(packet);
     }
-    
+
     public final void initCrypt(byte[] sessionKey) {
         WorldSessionPacketIO packetIO = (WorldSessionPacketIO)connection.packetIO;
         packetIO.initCrypt(sessionKey);
     }
-    
+
     @Override
     public void didReceivePacket(TCPConnection connection, Packet packet) {
         WorldOpcode opcode = WorldOpcode.get(packet.rawOpcode);
         if (opcode == null) {
-            System.out.println(">> Received unknown opcode: " + packet.rawOpcode);
+            System.out.println(">> Received unknown opcode: " + Integer.toHexString(packet.rawOpcode).toUpperCase());
             return;
         }
-        
+
         opcodeTable.handle(opcode, this, packet);
     }
-    
-    private void sendAuthChallenge() {
-        AuthChallengePacket packet = new AuthChallengePacket(authSeed);
+
+    private void verifyConnectivity() {
+        WorldPacket packet = new WorldPacket(WorldOpcode.MsgVerifyConnectivity, 200);
+        packet.putString("RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT", true);
         send(packet);
     }
 
-    public byte[] getAuthSeed() {
-        return authSeed;
+    private static byte[] generateSeed() {
+        byte[] seed = new SecureRandom().generateSeed(4);
+
+        for (int i = 0; i < seed.length; i++) {
+            seed[i] = (byte)Math.abs(seed[i]);
+        }
+
+        return seed;
     }
 }

@@ -19,21 +19,25 @@ public class Realmlist implements Iterable<Realm> {
     private final List<Realm> realms = new LinkedList<>();
 
     private Realmlist() { }
-    
+
     public final void load() {
-        realms.add(new Realm(1, "Dusko's SUPERCOOL server", "127.0.0.1", 15015));
+        realms.add(new Realm(1, "Skyfire MoP", "127.0.0.1", 15015));
     }
-    
+
     public final int count() {
         return realms.size();
     }
-    
+
     public final short size() {
         short sum = 0;
         for (Realm realm : realms) {
             sum += realm.size();
         }
         return sum;
+    }
+
+    public final Realm get(int index) {
+        return realms.get(index);
     }
 
     @Override public Iterator<Realm> iterator() {
@@ -43,12 +47,12 @@ public class Realmlist implements Iterable<Realm> {
     @Override public void forEach(Consumer<? super Realm> consumer) {
         realms.forEach(consumer);
     }
-    
+
     private static class RealmlistInstance {
-        
+
         public static final Realmlist instance = new Realmlist();
     }
-    
+
     public static Realmlist getInstance() {
         return RealmlistInstance.instance;
     }

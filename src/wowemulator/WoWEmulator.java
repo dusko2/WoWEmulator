@@ -17,18 +17,18 @@ import wowemulator.world.WorldServer;
 public class WoWEmulator {
 
     public static final long serverStartTime = System.currentTimeMillis();
-    
+
     public static void main(String[] args) {
         startLogonServer();
         startWorldServers();
     }
-    
+
     private static void startLogonServer() {
         Realmlist.getInstance().load();
-        
+
         LogonServer.getInstance().start();
     }
-    
+
     private static void startWorldServers() {
         for (Realm realm : Realmlist.getInstance()) {
             WorldServer server = new WorldServer(realm.port);

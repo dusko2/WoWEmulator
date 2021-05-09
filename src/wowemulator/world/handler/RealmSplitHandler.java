@@ -18,27 +18,27 @@ import wowemulator.world.WorldSession;
 public class RealmSplitHandler implements WorldOpcodeHandler {
 
     private enum RealmSplitState {
-        
+
         Normal      (0x00),
         Split       (0x01),
         SplitPending(0x02);
-        
+
         public final int rawValue;
 
         private RealmSplitState(int rawValue) {
             this.rawValue = rawValue;
         }
     }
-    
+
     @Override
     public void handle(WorldSession session, Packet packet) {
         int unknown = packet.getInt();
         String splitDate = "01/01/01";
-        
+
         WorldPacket response = new WorldPacket(WorldOpcode.SmsgRealmSplit, 4 + 4 + splitDate.length() + 1);
         response.putInt(unknown);
         response.putInt(RealmSplitState.Normal.rawValue);
-        response.putString(splitDate);
+        response.putString(splitDate, true);
         session.send(response);
     }
 }

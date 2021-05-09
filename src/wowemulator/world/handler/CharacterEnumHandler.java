@@ -23,13 +23,13 @@ public class CharacterEnumHandler implements WorldOpcodeHandler {
     public void handle(WorldSession session, Packet packet) {
         List<PlayerCharacter> characters = session.player.getCharacters();
         int size = characters.size() * 269 + characters.stream().mapToInt(character -> character.name.length() + 1).sum();
-        
+
         WorldPacket response = new WorldPacket(WorldOpcode.SmsgCharEnum, 1 + size);
         response.putByte((byte)characters.size());
-        
+
         for (PlayerCharacter character : characters) {
             response.putLong(character.guid);
-            response.putString(character.name);
+            response.putString(character.name, true);
             response.putByte(character.race);
             response.putByte(character.cClass);
             response.putByte(character.gender);
@@ -39,24 +39,24 @@ public class CharacterEnumHandler implements WorldOpcodeHandler {
             response.putByte(character.hairColor);
             response.putByte(character.facialHair);
             response.putByte(character.getLevel());
-            
+
             response.putInt(character.getZoneID()); // Zone ID
             response.putInt(character.getMapID()); // Map ID
             response.putFloat(character.position.x); // x
             response.putFloat(character.position.y); // y
             response.putFloat(character.position.z); // z
-            
+
             response.putInt(character.getGuildID()); // Guild ID
-            
+
             response.putInt(0); // Character flags
             response.putInt(0); // Customize flags
             response.putByte((byte)0); // First login?, move to database
-            
+
             // Only for hunters and warlocks
             response.putInt(0); // Pet displayID
             response.putInt(0); // Pet level
             response.putInt(0); // Pet familiyID
-            
+
             int equipmentSlotEnd = 23;
             for (int equipmentSlot = 0; equipmentSlot < equipmentSlotEnd; equipmentSlot++) {
                 response.putInt(0); // Item displayID
@@ -64,7 +64,7 @@ public class CharacterEnumHandler implements WorldOpcodeHandler {
                 response.putInt(1); // Item enchant ID
             }
         }
-        
+
         session.send(response);
     }
 }

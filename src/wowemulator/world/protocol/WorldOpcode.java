@@ -11,57 +11,65 @@ package wowemulator.world.protocol;
  */
 public enum WorldOpcode {
 
-    MsgTransferInitiate(0x4F57),
-    
+    MsgVerifyConnectivity(0x4F57),
+
     /*
      * Client messages
      */
-    
-    CmsgAuthProof               (0x01ED, WorldOpcodeStatus.Active),
-    CmsgCharEnum                (0x0037, WorldOpcodeStatus.Active),
-    CmsgRealmSplit              (0x038C, WorldOpcodeStatus.Active),
-    CmsgPing                    (0x01DC, WorldOpcodeStatus.Active),
-    CmsgReadyForAccountDataTimes(0x04FF, WorldOpcodeStatus.Active),
-    CmsgCharCreate              (0x0036, WorldOpcodeStatus.Active),
-    CmsgPlayerLogin             (0x003D, WorldOpcodeStatus.Active),
-    CmsgSetActiveVoiceChannel   (0x03D3, WorldOpcodeStatus.Inactive),
-    
+
+    CmsgAuthProof               (0x01ED, WorldOpcodeStatus.Inactive), // 3.3.5
+    CmsgCharEnum                (0x0037, WorldOpcodeStatus.Inactive), // 3.3.5
+    CmsgRealmSplit              (0x038C, WorldOpcodeStatus.Inactive), // 3.3.5
+    CmsgPing                    (0x01DC, WorldOpcodeStatus.Inactive), // 3.3.5
+    CmsgReadyForAccountDataTimes(0x04FF, WorldOpcodeStatus.Inactive), // 3.3.5
+    CmsgCharCreate              (0x0036, WorldOpcodeStatus.Inactive), // 3.3.5
+    CmsgPlayerLogin             (0x003D, WorldOpcodeStatus.Inactive), // 3.3.5
+    CmsgSetActiveVoiceChannel   (0x03D3, WorldOpcodeStatus.Inactive), // 3.3.5
+
+    CmsgAuthSession             (0x00B2, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgLogDisconnect           (0x10B3, WorldOpcodeStatus.Active), // 5.4.8
+
     /*
      * Server messages
      */
-    
-    SmsgAuthChallenge   (0x01EC),
-    SmsgAuthResponse    (0x01EE),
-    SmsgCharEnum        (0x003B),
-    SmsgPong            (0x01DD),
-    SmsgRealmSplit      (0x038B),
-    SmsgCharCreate      (0x003A),
-    SmsgLoginVerifyWorld(0x0236);
-    
+
+    SmsgAuthChallenge      (0x0949), // 5.4.8
+    SmsgAuthResponse       (0x0ABA), // 5.4.8
+    SmsgClientCacheVersion (0X002A), // 5.4.8
+    SmsgTutorialFlags      (0x1B90), // 5.4.8
+    SmsgTimezoneInformation(0x19C1), // 5.4.8
+    SmsgAddonInfo          (0x160A), // 5.4.8
+
+    SmsgCharEnum        (0x003B), // 3.3.5
+    SmsgPong            (0x01DD), // 3.3.5
+    SmsgRealmSplit      (0x038B), // 3.3.5
+    SmsgCharCreate      (0x003A), // 3.3.5
+    SmsgLoginVerifyWorld(0x0236); // 3.3.5
+
     private final int rawValue;
     public final WorldOpcodeStatus status;
-    
+
     private WorldOpcode(int rawValue) {
         this.rawValue = rawValue;
         this.status = WorldOpcodeStatus.Active;
     }
-    
+
     private WorldOpcode(int rawValue, WorldOpcodeStatus status) {
         this.rawValue = rawValue;
         this.status = status;
     }
-    
+
     public short getRawValue() {
         return (short)rawValue;
     }
-    
+
     public static WorldOpcode get(int rawValue) {
         for (WorldOpcode opcode : WorldOpcode.values()) {
             if (opcode.rawValue == rawValue) {
                 return opcode;
             }
         }
-        
+
         return null;
     }
 }

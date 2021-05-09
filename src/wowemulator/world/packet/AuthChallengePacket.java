@@ -5,7 +5,6 @@
  */
 package wowemulator.world.packet;
 
-import wowemulator.utils.BigNumber;
 import wowemulator.world.protocol.WorldOpcode;
 
 /**
@@ -15,10 +14,15 @@ import wowemulator.world.protocol.WorldOpcode;
 public class AuthChallengePacket extends WorldPacket {
 
     public AuthChallengePacket(byte[] authSeed) {
-        super(WorldOpcode.SmsgAuthChallenge, 4 + 4 + 32);
-        
-        putInt(1);
+        super(WorldOpcode.SmsgAuthChallenge, 39);
+
+        putShort((short)0);
+
+        for (int i = 0; i < 8; i++) {
+            putInt(0);
+        }
+
+        putByte((byte)1);
         putBytes(authSeed);
-        putBytes(BigNumber.randomBytes(32));
     }
 }

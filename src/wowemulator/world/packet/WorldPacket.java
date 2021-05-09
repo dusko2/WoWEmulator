@@ -16,16 +16,30 @@ import wowemulator.utils.Vec4;
  */
 public class WorldPacket extends Packet {
 
+    public final WorldOpcode worldOpcode;
+
     public WorldPacket(WorldOpcode opcode, int size) {
         super(opcode.getRawValue(), size);
-        
+
+        worldOpcode = opcode;
         body.order(ByteOrder.LITTLE_ENDIAN);
     }
-    
+
     public final void putPosition(Vec4 position) {
         putFloat(position.x);
         putFloat(position.y);
         putFloat(position.z);
         putFloat(position.o);
+    }
+
+    @Override public Packet wrap() {
+        byte[] wrapped = new byte[body.position()];
+        body.position(0);
+        body.get(wrapped);
+
+        WorldPacket packet = new WorldPacket(worldOpcode, wrapped.length);
+        packet.putBytes(wrapped);
+
+        return packet;
     }
 }

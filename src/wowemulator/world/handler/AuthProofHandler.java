@@ -24,32 +24,32 @@ public class AuthProofHandler implements WorldOpcodeHandler {
 
     @Override public void handle(WorldSession session, Packet packet) {
         AuthProof authProof = new AuthProof(packet);
-        
+
         Client client = LogonServer.getInstance().getClient(authProof.accountName);
         if (client == null) {
             // TODO: Close session
             System.out.println("Client = null");
             return;
         }
-        
+
         MessageDigest digest = HashUtils.getSHA1();
         digest.update(client.username.toUpperCase().getBytes());
         digest.update(new byte[] { 0, 0, 0, 0 });
         digest.update(authProof.clientSeed);
-        digest.update(session.getAuthSeed());
+        digest.update(session.authSeed);
         digest.update(client.getSessionKey());
-        
+
         BigNumber authProofDigest = new BigNumber(authProof.digest);
         BigNumber result = new BigNumber(digest.digest());
-        
+
         if (!authProofDigest.equals(result)) {
             // TODO: Close connection
             System.out.println("digest not equal");
             return;
         }
-        
+
         session.initCrypt(client.getSessionKey());
-        
+
         WorldPacket response = new WorldPacket(WorldOpcode.SmsgAuthResponse, 1 + 1 + 1 + 8);
         response.putByte((byte)0x0C);
         response.putByte((byte)0x30);
@@ -57,13 +57,13 @@ public class AuthProofHandler implements WorldOpcodeHandler {
         response.putLong(0x02);
         session.send(response);
     }
-    
+
     private class AuthProof {
-        
+
         public final String accountName;
         public final byte[] clientSeed = new byte[4];
         public final byte[] digest = new byte[20];
-        
+
         public AuthProof(Packet packet) {
             packet.getInt(); // Client build
             packet.getInt(); // Unknown
