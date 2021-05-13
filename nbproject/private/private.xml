@@ -3,15 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/world/protocol/WorldOpcodeTable.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/realm/Realmlist.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/utils/BitUnpack.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/world/handler/AuthSessionHandler.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/world/packet/WorldSessionPacketIO.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/WoWEmulator.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/world/protocol/WorldOpcode.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/world/WorldSession.java</file>
-            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/database/AddonData.java</file>
+            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/world/packet/WorldPacket.java</file>
+            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/world/handler/EnumCharactersHandler.java</file>
+            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/utils/BitPack.java</file>
+            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/guid/HighGuidType.java</file>
+            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/guid/ObjectGuid.java</file>
+            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/player/Player.java</file>
+            <file>file:/D:/Dusko/Projects/NetBeans/WoWEmulatorGit/src/wowemulator/player/character/PlayerCharacter.java</file>
         </group>
     </open-files>
 </project-private>

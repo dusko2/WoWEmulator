@@ -1,41 +1,51 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * CharacterCreateInfo.java
+ * WoWEmulator
+ *
+ * Created on May 12, 2021
+ * Copyright(c) Dusko Mirkovic, All Rights Reserved.
+ *
  */
+
 package wowemulator.player.character;
 
 import wowemulator.networking.packet.Packet;
 
 /**
  *
- * @author Dusko
+ * @author Dusko Mirkovic
  */
 public class CharacterCreateInfo {
 
-    public final String name;
-    public final byte race;
-    public final byte cClass;
-    public final byte gender;
-    public final byte skinColor;
-    public final byte faceStyle;
+    public final byte outfitID;
     public final byte hairStyle;
-    public final byte hairColor;
+    public final byte clazz;
+    public final byte skin;
+    public final byte face;
+    public final byte race;
     public final byte facialHair;
-    
+    public final byte gender;
+    public final byte hairColor;
+    public final String name;
+
     public CharacterCreateInfo(Packet packet) {
-        this.name = formatted(packet.getString());
-        this.race = packet.getByte();
-        this.cClass = packet.getByte();
-        this.gender = packet.getByte();
-        this.skinColor = packet.getByte();
-        this.faceStyle = packet.getByte();
-        this.hairStyle = packet.getByte();
-        this.hairColor = packet.getByte();
-        this.facialHair = packet.getByte();
-    }
-    
-    private String formatted(String string) {
-        return Character.toUpperCase(string.charAt(0)) + string.substring(1).toLowerCase();
+        this.outfitID = packet.body.getByte();
+        this.hairStyle = packet.body.getByte();
+        this.clazz = packet.body.getByte();
+        this.skin = packet.body.getByte();
+        this.face = packet.body.getByte();
+        this.race = packet.body.getByte();
+        this.facialHair = packet.body.getByte();
+        this.gender = packet.body.getByte();
+        this.hairColor = packet.body.getByte();
+
+        int nameLength = packet.body.getBits(6);
+        boolean unknown = packet.body.getBit();
+
+        this.name = packet.body.getString(nameLength);
+
+        if (unknown) {
+            packet.body.getInt();
+        }
     }
 }

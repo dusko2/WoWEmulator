@@ -10,9 +10,11 @@ import java.util.Map;
 import wowemulator.networking.packet.Packet;
 import wowemulator.world.WorldSession;
 import wowemulator.world.handler.AuthSessionHandler;
+import wowemulator.world.handler.CharacterCreateHandler;
 import wowemulator.world.handler.EnumCharactersHandler;
 import wowemulator.world.handler.LogDisconnectHandler;
 import wowemulator.world.handler.PingHandler;
+import wowemulator.world.handler.RandomizeCharacterNameHandler;
 import wowemulator.world.handler.ReadyForAccountDataTimesHandler;
 import wowemulator.world.handler.UpdateAccountDataHandler;
 import wowemulator.world.handler.VerifyConnectivityHandler;
@@ -34,6 +36,8 @@ public class WorldOpcodeTable {
         opcodeTable.put(WorldOpcode.CmsgEnumCharacters,           new EnumCharactersHandler());
         opcodeTable.put(WorldOpcode.CmsgPing,                     new PingHandler());
         opcodeTable.put(WorldOpcode.CmsgUpdateAccountData,        new UpdateAccountDataHandler());
+        opcodeTable.put(WorldOpcode.CmsgRandomizeCharacterName,   new RandomizeCharacterNameHandler());
+        opcodeTable.put(WorldOpcode.CmsgCharacterCreate,          new CharacterCreateHandler());
     }
 
     public final void handle(WorldOpcode opcode, WorldSession session, Packet packet) {

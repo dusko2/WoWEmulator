@@ -5,7 +5,6 @@
  */
 package wowemulator.logon.auth;
 
-import java.nio.ByteOrder;
 import wowemulator.networking.packet.Packet;
 
 /**
@@ -16,8 +15,7 @@ public class AuthPacket extends Packet {
 
     public AuthPacket(int opcode, int size) {
         super(opcode, size);
-        
-        body.order(ByteOrder.LITTLE_ENDIAN);
-        body.put((byte)rawOpcode);
+
+        body.putByte((byte)rawOpcode);
     }
 }

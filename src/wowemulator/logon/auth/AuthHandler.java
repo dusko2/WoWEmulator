@@ -45,10 +45,10 @@ public class AuthHandler {
     private final MessageDigest digest = HashUtils.getSHA1();
 
     private String parseUsername(Packet packet) {
-        byte length = packet.getByte();
+        byte length = packet.body.getByte();
 
         byte[] usernameBytes = new byte[length];
-        packet.getBytes(usernameBytes);
+        packet.body.getBytes(usernameBytes);
 
         return new String(usernameBytes);
     }
@@ -62,8 +62,8 @@ public class AuthHandler {
 
         if(!userExists) {
             AuthPacket response = new AuthPacket(AuthOpcode.ClientLogonChallenge.getRawValue(), 3);
-            response.putByte((byte)0);
-            response.putByte(AuthCodes.AuthUnknownAccount.rawValue);
+            response.body.putByte((byte)0);
+            response.body.putByte(AuthCodes.AuthUnknownAccount.rawValue);
             session.send(response);
 
             return;
@@ -74,8 +74,8 @@ public class AuthHandler {
 
         if (userLoggedIn) {
             AuthPacket response = new AuthPacket(AuthOpcode.ClientLogonChallenge.getRawValue(), 3);
-            response.putByte((byte)0);
-            response.putByte(AuthCodes.AuthAlreadyLoggedIn.rawValue);
+            response.body.putByte((byte)0);
+            response.body.putByte(AuthCodes.AuthAlreadyLoggedIn.rawValue);
             session.send(response);
 
             return;
@@ -99,31 +99,31 @@ public class AuthHandler {
         B = (v.multiply(k).add(gmod)).remainder(N);
 
         AuthPacket response = new AuthPacket(AuthOpcode.ClientLogonChallenge.getRawValue(), 119);
-        response.putByte((byte)0); // unk
-        response.putByte((byte)0); // WoW_SUCCES
-        response.putBytes(B.asByteArray(32));
-        response.putByte((byte)1);
-        response.putBytes(g.asByteArray(1));
-        response.putByte((byte)32);
-        response.putBytes(N.asByteArray(32));
-        response.putBytes(s.asByteArray(32));
-        response.putBytes(new byte[16]);
-        response.putByte((byte)0); // unk
+        response.body.putByte((byte)0); // unk
+        response.body.putByte((byte)0); // WoW_SUCCES
+        response.body.putBytes(B.asByteArray(32));
+        response.body.putByte((byte)1);
+        response.body.putBytes(g.asByteArray(1));
+        response.body.putByte((byte)32);
+        response.body.putBytes(N.asByteArray(32));
+        response.body.putBytes(s.asByteArray(32));
+        response.body.putBytes(new byte[16]);
+        response.body.putByte((byte)0); // unk
         session.send(response);
     }
 
     private void clientLogonProofHandler(LogonSession session, Packet packet) {
         byte[] _A = new byte[32];
-        packet.getBytes(_A);
+        packet.body.getBytes(_A);
 
         byte[] _M1 = new byte[20];
-        packet.getBytes(_M1);
+        packet.body.getBytes(_M1);
 
         byte[] crc_hash = new byte[20];
-        packet.getBytes(crc_hash);
+        packet.body.getBytes(crc_hash);
 
-        packet.getByte(); // number_of_keys
-        packet.getByte(); // unk
+        packet.body.getByte(); // number_of_keys
+        packet.body.getByte(); // unk
 
         // Generate u - the so called "Random scrambling parameter"
         BigNumber A = new BigNumber();
@@ -210,11 +210,11 @@ public class AuthHandler {
         short size = 32;
 
         AuthPacket response = new AuthPacket(AuthOpcode.ClientLogonProof.getRawValue(), size);
-        response.putByte((byte)0); // error
-        response.putBytes(digest.digest());
-        response.putInt(0x00800000); // Account flags
-        response.putInt(0); // survey ID
-        response.putShort((short)0); // unk2-3
+        response.body.putByte((byte)0); // error
+        response.body.putBytes(digest.digest());
+        response.body.putInt(0x00800000); // Account flags
+        response.body.putInt(0); // survey ID
+        response.body.putShort((short)0); // unk2-3
         session.send(response);
     }
 
@@ -224,25 +224,25 @@ public class AuthHandler {
         short size = (short)(8 + realmlist.size());
 
         AuthPacket response = new AuthPacket(AuthOpcode.ClientRealmlist.getRawValue(), size + 3);
-        response.putShort(size); // Size Placeholder
-        response.putInt(0); // unknown?
-        response.putShort((short)realmlist.count()); // Realm count
+        response.body.putShort(size); // Size Placeholder
+        response.body.putInt(0); // unknown?
+        response.body.putShort((short)realmlist.count()); // Realm count
 
         // all realms
         for (Realm realm : realmlist) {
-            response.putByte((byte)0x2A);
-            response.putByte((byte)0);
-            response.putByte((byte)realm.flags);
-            response.putString(realm.name, true); // Name
-            response.putString(realm.address, true); // Address
-            response.putFloat(realm.population); // Population
-            response.putByte((byte)0); // char count
+            response.body.putByte((byte)0x2A);
+            response.body.putByte((byte)0);
+            response.body.putByte((byte)realm.flags);
+            response.body.putString(realm.name, true); // Name
+            response.body.putString(realm.address, true); // Address
+            response.body.putFloat(realm.population); // Population
+            response.body.putByte((byte)0); // char count
 
-            response.putByte((byte)1); // unk
-            response.putByte((byte)0x2C); // unk
+            response.body.putByte((byte)1); // unk
+            response.body.putByte((byte)0x2C); // unk
         }
 
-        response.putShort((short)0x10);
+        response.body.putShort((short)0x10);
         session.send(response.wrap());
     }
 }

@@ -9,11 +9,10 @@
 
 package wowemulator.utils;
 
+import io.archivcore.networking.DataBuffer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.InflaterInputStream;
@@ -24,15 +23,14 @@ import java.util.zip.InflaterInputStream;
  */
 public class ZLibUtils {
 
-    public static ByteBuffer decompress(byte[] source, int offset, int count, int destinationCount) {
-        ByteBuffer decompressed = ByteBuffer.allocate(destinationCount);
-        decompressed.order(ByteOrder.LITTLE_ENDIAN);
+    public static DataBuffer decompress(byte[] source, int offset, int count, int destinationCount) {
+        DataBuffer decompressed = new DataBuffer(destinationCount);
 
         try (InputStream decompressor = new InflaterInputStream(new ByteArrayInputStream(source, offset, count))) {
             byte[] decompressedData = new byte[destinationCount];
             decompressor.read(decompressedData);
 
-            decompressed.put(decompressedData);
+            decompressed.putBytes(decompressedData);
         } catch (IOException ex) {
             Logger.getLogger(ZLibUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -41,7 +39,7 @@ public class ZLibUtils {
         return decompressed;
     }
 
-    public static ByteBuffer decompress(byte[] source, int destinationCount) {
+    public static DataBuffer decompress(byte[] source, int destinationCount) {
         return decompress(source, 0, source.length, destinationCount);
     }
 }

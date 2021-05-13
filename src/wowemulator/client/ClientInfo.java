@@ -32,33 +32,33 @@ public class ClientInfo {
         this.timezoneBias = timezoneBias;
         this.ipAddress = ipAddress;
     }
-    
+
     public static ClientInfo parse(Packet packet) {
-        String gamename = packet.getString(4);
+        String gamename = packet.body.getString(4);
         String version = parseVersion(packet);
-        int build = packet.getShort();
-        String platform = packet.getString(4);
-        String os = packet.getString(4);
-        String country = packet.getString(4);
-        int timezoneBias = packet.getInt();
+        int build = packet.body.getShort();
+        String platform = packet.body.getString(4);
+        String os = packet.body.getString(4);
+        String country = packet.body.getString(4);
+        int timezoneBias = packet.body.getInt();
         String ip = parseIPAddress(packet);
-        
+
         return new ClientInfo(gamename, version, build, platform, os, country, timezoneBias, ip);
     }
-    
+
     private static String parseVersion(Packet packet) {
-        String version = Byte.toString(packet.getByte());
-        
-        byte middleValue = packet.getByte();
+        String version = Byte.toString(packet.body.getByte());
+
+        byte middleValue = packet.body.getByte();
         version += Byte.toString(middleValue >= 10 ? 0 : middleValue);
-        
-        version += Byte.toString(packet.getByte());
-        
+
+        version += Byte.toString(packet.body.getByte());
+
         return version;
     }
-    
+
     private static String parseIPAddress(Packet packet) {
-        int intIP = packet.getInt();
+        int intIP = packet.body.getInt();
 
         int octet[] = { 0, 0, 0, 0 };
 

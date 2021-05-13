@@ -43,8 +43,6 @@ public class WorldSessionPacketIO extends PacketIO {
             inputStream.read(bodyBytes);
 
             Packet packet = new Packet(header, bodyBytes);
-            packet.body.order(ByteOrder.LITTLE_ENDIAN);
-
             return packet;
         } catch (IOException ex) {
             return null;
@@ -54,11 +52,11 @@ public class WorldSessionPacketIO extends PacketIO {
     @Override public void sendPacket(Packet packet) {
         try {
             byte[] header = encode(packet.size, packet.rawOpcode);
-            packet.body.position(0);
+            byte[] body = packet.body.array();
 
-            ByteBuffer buffer = ByteBuffer.allocate(header.length + packet.body.capacity());
+            ByteBuffer buffer = ByteBuffer.allocate(header.length + body.length);
             buffer.put(header);
-            buffer.put(packet.body);
+            buffer.put(body);
 
             outputStream.write(buffer.array());
         } catch (IOException ex) {

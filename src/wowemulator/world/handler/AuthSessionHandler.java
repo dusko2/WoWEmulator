@@ -9,17 +9,10 @@
 
 package wowemulator.world.handler;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import io.archivcore.networking.DataBuffer;
 import java.security.MessageDigest;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.zip.InflaterInputStream;
 import wowemulator.client.Client;
 import wowemulator.logon.LogonServer;
 import wowemulator.networking.packet.Packet;
@@ -27,9 +20,6 @@ import wowemulator.realm.Realm;
 import wowemulator.realm.RealmClass;
 import wowemulator.realm.RealmRace;
 import wowemulator.realm.Realmlist;
-import wowemulator.utils.BitPack;
-import wowemulator.utils.BitUnpack;
-import wowemulator.utils.ByteBufferUtils;
 import wowemulator.utils.HashUtils;
 import wowemulator.utils.ZLibUtils;
 import wowemulator.world.WorldSession;
@@ -69,56 +59,55 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
         public final String username;
 
         public AuthSessionData(Packet packet) {
-            packet.getInt();
-            packet.getInt();
-            packet.getBytes(digest, 18, 14, 3, 4, 0);
-            packet.getInt();
-            digest[11] = packet.getByte();
-            packet.getBytes(clientSeed);
-            digest[19] = packet.getByte();
-            packet.getByte();
-            packet.getByte();
-            packet.getBytes(digest, 2, 9, 12);
-            packet.getLong();
-            packet.getInt();
-            packet.getBytes(digest, 16, 5, 6, 8);
-            clientBuild = packet.getShort();
-            packet.getBytes(digest, 17, 7, 13, 15, 1, 10);
+            packet.body.getInt();
+            packet.body.getInt();
+            packet.body.getBytes(digest, 18, 14, 3, 4, 0);
+            packet.body.getInt();
+            digest[11] = packet.body.getByte();
+            packet.body.getBytes(clientSeed);
+            digest[19] = packet.body.getByte();
+            packet.body.getByte();
+            packet.body.getByte();
+            packet.body.getBytes(digest, 2, 9, 12);
+            packet.body.getLong();
+            packet.body.getInt();
+            packet.body.getBytes(digest, 16, 5, 6, 8);
+            clientBuild = packet.body.getShort();
+            packet.body.getBytes(digest, 17, 7, 13, 15, 1, 10);
 
-            int addonSize = packet.getInt();
+            int addonSize = packet.body.getInt();
             rawAddonData = new byte[addonSize];
-            packet.getBytes(rawAddonData);
+            packet.body.getBytes(rawAddonData);
 
-            BitUnpack bitUnpack = new BitUnpack(packet);
-            int nameLength = bitUnpack.getNameLength((byte)11);
+            packet.body.getBit(); // unknown
+            int nameLength = packet.body.getBits((byte)11);
 
-            username = packet.getString(nameLength);
+            username = packet.body.getString(nameLength);
         }
 
-        private ByteBuffer addonDataBuffer() {
-            ByteBuffer addonData = ByteBuffer.allocate(rawAddonData.length);
-            addonData.order(ByteOrder.LITTLE_ENDIAN);
-            addonData.put(rawAddonData);
+        private DataBuffer addonDataBuffer() {
+            DataBuffer addonData = new DataBuffer(rawAddonData.length);
+            addonData.putBytes(rawAddonData);
             addonData.position(0);
             return addonData;
         }
 
-        private ByteBuffer decompressedAddonData() {
-            ByteBuffer addonData = addonDataBuffer();
+        private DataBuffer decompressedAddonData() {
+            DataBuffer addonData = addonDataBuffer();
             int size = addonData.getInt();
 
-            return ZLibUtils.decompress(addonData.array(), addonData.position(), addonData.capacity() - addonData.position(), size);
+            return ZLibUtils.decompress(addonData.array(), addonData.position(), addonData.size - addonData.position(), size);
         }
 
         public List<AddonInfo> getAddonInfo() {
             List<AddonInfo> list = new LinkedList<>();
 
-            ByteBuffer addonData = decompressedAddonData();
+            DataBuffer addonData = decompressedAddonData();
             int addonCount = addonData.getInt();
 
             for (int i = 0; i < addonCount; i++) {
-                String name = ByteBufferUtils.getString(addonData);
-                boolean usingPubKey = addonData.get() >= 1;
+                String name = addonData.getString();
+                boolean usingPubKey = addonData.getByte() >= 1;
                 int crc = addonData.getInt();
                 int urlFile = addonData.getInt();
 
@@ -178,65 +167,63 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
         Realm realm = Realmlist.getInstance().get(0);
 
         WorldPacket packet = new WorldPacket(WorldOpcode.SmsgAuthResponse, 200);
-        BitPack pack = new BitPack(packet);
-
-        pack.write(code == 12);
+        packet.body.putBit(code == 12);
 
         if (code == 12) {
-            pack.write(1, 21);
+            packet.body.putBit(1, 21);
 
-            pack.write(realm.name.length(), 8);
-            pack.write(realm.name.length(), 8);
-            pack.write(true);
+            packet.body.putBit(realm.name.length(), 8);
+            packet.body.putBit(realm.name.length(), 8);
+            packet.body.putBit(true);
 
-            pack.write(realm.classes.length, 23);
-            pack.write(0, 21);
-            pack.write(0);
-            pack.write(0);
-            pack.write(0);
-            pack.write(0);
-            pack.write(realm.races.length, 23);
-            pack.write(0);
+            packet.body.putBit(realm.classes.length, 23);
+            packet.body.putBit(0, 21);
+            packet.body.putBit(0);
+            packet.body.putBit(0);
+            packet.body.putBit(0);
+            packet.body.putBit(0);
+            packet.body.putBit(realm.races.length, 23);
+            packet.body.putBit(0);
         }
 
-        pack.write(queued);
+        packet.body.putBit(queued);
 
         if (queued) {
-            pack.write(1);
+            packet.body.putBit(1);
         }
 
-        pack.flush();
+        packet.body.flush();
 
         if (queued) {
-            packet.putInt(0);
+            packet.body.putInt(0);
         }
 
         if (code == 12) {
-            packet.putInt(realm.id);
-            packet.putString(realm.name, false);
-            packet.putString(realm.name, false);
+            packet.body.putInt(realm.id);
+            packet.body.putString(realm.name, false);
+            packet.body.putString(realm.name, false);
 
             for (RealmRace race : realm.races) {
-                packet.putByte(race.expansion);
-                packet.putByte(race.id);
+                packet.body.putByte(race.expansion);
+                packet.body.putByte(race.id);
             }
 
             for (RealmClass clazz : realm.classes) {
-                packet.putByte(clazz.expansion);
-                packet.putByte(clazz.id);
+                packet.body.putByte(clazz.expansion);
+                packet.body.putByte(clazz.id);
             }
 
-            packet.putInt(0);
-            packet.putByte((byte)4);
-            packet.putInt(4);
-            packet.putInt(0);
-            packet.putByte((byte)4);
-            packet.putInt(0);
-            packet.putInt(0);
-            packet.putInt(0);
+            packet.body.putInt(0);
+            packet.body.putByte((byte)4);
+            packet.body.putInt(4);
+            packet.body.putInt(0);
+            packet.body.putByte((byte)4);
+            packet.body.putInt(0);
+            packet.body.putInt(0);
+            packet.body.putInt(0);
         }
 
-        packet.putByte((byte)code);
+        packet.body.putByte((byte)code);
         session.send((WorldPacket)packet.wrap());
     }
 
@@ -282,25 +269,24 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
         List<AddonInfo> addonList = authSessionData.getAddonInfo();
 
         WorldPacket packet = new WorldPacket(WorldOpcode.SmsgAddonInfo, 2000);
-        BitPack pack = new BitPack(packet);
 
-        pack.write(0, 18); // Banned addons
-        pack.write(addonList.size(), 23);
+        packet.body.putBit(0, 18); // Banned addons
+        packet.body.putBit(addonList.size(), 23);
 
         for (AddonInfo addonInfo : addonList) {
-            pack.write(0);
-            pack.write(addonInfo.enabled);
-            pack.write(!addonInfo.usePublicKeyOrCRC);
+            packet.body.putBit(0);
+            packet.body.putBit(addonInfo.enabled);
+            packet.body.putBit(!addonInfo.usePublicKeyOrCRC);
         }
 
-        pack.flush();
+        packet.body.flush();
 
         for (AddonInfo addonInfo : addonList) {
             if (!addonInfo.usePublicKeyOrCRC) {
                 int position = packet.body.position();
 
                 for (int i = 0; i < 256; i++) {
-                    packet.putByte((byte)0);
+                    packet.body.putByte((byte)0);
                 }
 
                 for (int i = 0; i < 256; i++) {
@@ -309,11 +295,11 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
             }
 
             if (addonInfo.enabled >= 1) {
-                packet.putByte(addonInfo.enabled);
-                packet.putInt(0);
+                packet.body.putByte(addonInfo.enabled);
+                packet.body.putInt(0);
             }
 
-            packet.putByte(addonInfo.state);
+            packet.body.putByte(addonInfo.state);
         }
 
         session.send((WorldPacket)packet.wrap());
@@ -321,20 +307,20 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
 
     private void sendClientCacheVersion(WorldSession session, int version) {
         WorldPacket packet = new WorldPacket(WorldOpcode.SmsgClientCacheVersion, 4);
-        packet.putInt(version);
+        packet.body.putInt(version);
         session.send(packet);
     }
 
     private void sendTutorialFlags(WorldSession session) {
         WorldPacket packet = new WorldPacket(WorldOpcode.SmsgTutorialFlags, 4 * 8);
-        packet.putInt(14684593);
-        packet.putInt(279183585);
-        packet.putInt(0);
-        packet.putInt(0);
-        packet.putInt(0);
-        packet.putInt(0);
-        packet.putInt(0);
-        packet.putInt(0);
+        packet.body.putInt(14684593);
+        packet.body.putInt(279183585);
+        packet.body.putInt(0);
+        packet.body.putInt(0);
+        packet.body.putInt(0);
+        packet.body.putInt(0);
+        packet.body.putInt(0);
+        packet.body.putInt(0);
         session.send(packet);
     }
 
@@ -342,14 +328,13 @@ public class AuthSessionHandler implements WorldOpcodeHandler {
         String timezoneInformation = "Etc/UTF";
 
         WorldPacket packet = new WorldPacket(WorldOpcode.SmsgTimezoneInformation, 2 + timezoneInformation.length() * 2);
-        BitPack pack = new BitPack(packet);
 
-        pack.write(timezoneInformation.length(), 7);
-        pack.write(timezoneInformation.length(), 7);
-        pack.flush();
+        packet.body.putBit(timezoneInformation.length(), 7);
+        packet.body.putBit(timezoneInformation.length(), 7);
+        packet.body.flush();
 
-        packet.putString(timezoneInformation, false);
-        packet.putString(timezoneInformation, false);
+        packet.body.putString(timezoneInformation, false);
+        packet.body.putString(timezoneInformation, false);
         session.send(packet);
     }
 }

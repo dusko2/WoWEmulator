@@ -24,21 +24,26 @@ public enum WorldOpcode {
     CmsgPing                    (0x0012, WorldOpcodeStatus.Active), // 5.4.8
     CmsgRealmSplit              (0x18B2, WorldOpcodeStatus.Inactive), // 5.4.8
     CmsgUpdateAccountData       (0x0068, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgRandomizeCharacterName  (0x0B1C, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgCharacterCreate         (0x0F1D, WorldOpcodeStatus.Active), // 5.4.8
 
     /*
      * Server messages
      */
 
-    SmsgAuthChallenge        (0x0949), // 5.4.8
-    SmsgAuthResponse         (0x0ABA), // 5.4.8
-    SmsgClientCacheVersion   (0X002A), // 5.4.8
-    SmsgTutorialFlags        (0x1B90), // 5.4.8
-    SmsgTimezoneInformation  (0x19C1), // 5.4.8
-    SmsgAddonInfo            (0x160A), // 5.4.8
-    SmsgAccountDataTimes     (0x162B), // 5.4.8
-    SmsgPong                 (0x1969), // 5.4.8
+    SmsgAuthChallenge         (0x0949), // 5.4.8
+    SmsgAuthResponse          (0x0ABA), // 5.4.8
+    SmsgClientCacheVersion    (0X002A), // 5.4.8
+    SmsgTutorialFlags         (0x1B90), // 5.4.8
+    SmsgTimezoneInformation   (0x19C1), // 5.4.8
+    SmsgAddonInfo             (0x160A), // 5.4.8
+    SmsgAccountDataTimes      (0x162B), // 5.4.8
+    SmsgPong                  (0x1969), // 5.4.8
+    SmsgEnumCharactersResult  (0x11C3), // 5.4.8
+    SmsgRandomizeCharacterName(0x169F), // 5.4.8
+    SmsgCharacterCreate       (0x1CAA), // 5.4.8
 
-    SmsgUpdateAccountDataDone(0x0000); // Unknown
+    SmsgUpdateAccountDataDone (0x0000); // Unknown
 
     private final int rawValue;
     public final WorldOpcodeStatus status;

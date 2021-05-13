@@ -20,7 +20,7 @@ import wowemulator.world.protocol.WorldOpcodeHandler;
 public class LogDisconnectHandler implements WorldOpcodeHandler {
 
     @Override public void handle(WorldSession session, Packet packet) {
-        int disconnectReason = packet.getInt();
+        int disconnectReason = packet.body.getInt();
         System.out.println(">> Disconnect reason " + disconnectReason);
 
         session.stop();

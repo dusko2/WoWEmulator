@@ -17,18 +17,18 @@ import java.nio.ByteBuffer;
  */
 public class ByteBufferUtils {
 
-    public static String getString(ByteBuffer buffer) {
-        StringBuilder builder = new StringBuilder();
-
-        while (buffer.position() < buffer.capacity()) {
-            byte value = buffer.get();
-            if (value == 0) {
-                break;
-            }
-
-            builder.append((char)value);
-        }
-
-        return builder.toString();
-    }
+//    public static String getString(ByteBuffer buffer) {
+//        StringBuilder builder = new StringBuilder();
+//
+//        while (buffer.position() < buffer.capacity()) {
+//            byte value = buffer.get();
+//            if (value == 0) {
+//                break;
+//            }
+//
+//            builder.append((char)value);
+//        }
+//
+//        return builder.toString();
+//    }
 }

@@ -68,7 +68,7 @@ public class WorldSession implements TCPConnectionDelegate {
 
     private void verifyConnectivity() {
         WorldPacket packet = new WorldPacket(WorldOpcode.MsgVerifyConnectivity, 200);
-        packet.putString("RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT", true);
+        packet.body.putString("RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT", true);
         send(packet);
     }
 

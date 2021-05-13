@@ -22,7 +22,7 @@ public class VerifyConnectivityHandler implements WorldOpcodeHandler {
 
     @Override public void handle(WorldSession session, Packet packet) {
         String expectedMessage = "D OF WARCRAFT CONNECTION - CLIENT TO SERVER";
-        String received = packet.getString();
+        String received = packet.body.getString();
 
         if (expectedMessage.equals(received)) {
             AuthChallengePacket responsePacket = new AuthChallengePacket(session.authSeed);

@@ -5,8 +5,10 @@
  */
 package wowemulator.player;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import wowemulator.player.character.PlayerCharacter;
 
 /**
  *
@@ -15,6 +17,7 @@ import java.util.Map;
 public class Player {
 
     private final Map<AccountDataType, AccountData> accountData = new HashMap<>();
+    private final Map<Long, PlayerCharacter> characters = new HashMap<>();
 
     public Player() {
         for (AccountDataType type : AccountDataType.values()) {
@@ -28,5 +31,13 @@ public class Player {
 
     public final AccountData getAccountData(AccountDataType type) {
         return accountData.get(type);
+    }
+
+    public final void addNewCharacter(PlayerCharacter character) {
+        characters.put(character.objectGuid.guid, character);
+    }
+
+    public final Collection<PlayerCharacter> getAllCharacters() {
+        return characters.values();
     }
 }

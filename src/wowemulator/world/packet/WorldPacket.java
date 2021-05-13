@@ -5,8 +5,8 @@
  */
 package wowemulator.world.packet;
 
+import io.archivcore.networking.DataBuffer;
 import wowemulator.world.protocol.WorldOpcode;
-import java.nio.ByteOrder;
 import wowemulator.networking.packet.Packet;
 import wowemulator.utils.Vec4;
 
@@ -22,23 +22,20 @@ public class WorldPacket extends Packet {
         super(opcode.getRawValue(), size);
 
         worldOpcode = opcode;
-        body.order(ByteOrder.LITTLE_ENDIAN);
     }
 
     public final void putPosition(Vec4 position) {
-        putFloat(position.x);
-        putFloat(position.y);
-        putFloat(position.z);
-        putFloat(position.o);
+        body.putFloat(position.x);
+        body.putFloat(position.y);
+        body.putFloat(position.z);
+        body.putFloat(position.o);
     }
 
     @Override public Packet wrap() {
-        byte[] wrapped = new byte[body.position()];
-        body.position(0);
-        body.get(wrapped);
+        DataBuffer buffer = body.wrap();
 
-        WorldPacket packet = new WorldPacket(worldOpcode, wrapped.length);
-        packet.putBytes(wrapped);
+        WorldPacket packet = new WorldPacket(worldOpcode, buffer.size);
+        packet.body.putBytes(buffer.array());
 
         return packet;
     }

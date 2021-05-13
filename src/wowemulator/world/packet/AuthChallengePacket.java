@@ -16,13 +16,13 @@ public class AuthChallengePacket extends WorldPacket {
     public AuthChallengePacket(byte[] authSeed) {
         super(WorldOpcode.SmsgAuthChallenge, 39);
 
-        putShort((short)0);
+        body.putShort((short)0);
 
         for (int i = 0; i < 8; i++) {
-            putInt(0);
+            body.putInt(0);
         }
 
-        putByte((byte)1);
-        putBytes(authSeed);
+        body.putByte((byte)1);
+        body.putBytes(authSeed);
     }
 }
