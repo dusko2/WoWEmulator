@@ -9,8 +9,7 @@
 
 package wowemulator.guid;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import io.archivcore.networking.DataBuffer;
 
 /**
  *
@@ -30,11 +29,10 @@ public class ObjectGuid {
         this.guid = guid;
         this.bytes = new byte[Long.BYTES];
 
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        DataBuffer buffer = new DataBuffer(Long.BYTES);
         buffer.putLong(this.guid);
         buffer.position(0);
-        buffer.get(this.bytes);
+        buffer.getBytes(this.bytes);
     }
 
     public static ObjectGuid create(int id, int e, HighGuidType type) {

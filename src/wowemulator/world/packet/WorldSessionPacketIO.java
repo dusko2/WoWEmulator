@@ -5,9 +5,8 @@
  */
 package wowemulator.world.packet;
 
+import io.archivcore.networking.DataBuffer;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import wowemulator.crypt.Crypt;
@@ -54,9 +53,9 @@ public class WorldSessionPacketIO extends PacketIO {
             byte[] header = encode(packet.size, packet.rawOpcode);
             byte[] body = packet.body.array();
 
-            ByteBuffer buffer = ByteBuffer.allocate(header.length + body.length);
-            buffer.put(header);
-            buffer.put(body);
+            DataBuffer buffer = new DataBuffer(header.length + body.length);
+            buffer.putBytes(header);
+            buffer.putBytes(body);
 
             outputStream.write(buffer.array());
         } catch (IOException ex) {
@@ -69,32 +68,30 @@ public class WorldSessionPacketIO extends PacketIO {
     }
 
     private byte[] encode(int size, int opcode) {
+        DataBuffer buffer = new DataBuffer(4);
+
         if (crypt.isEnabled()) {
             int maxOpcode = 0x1FFF;
 
             int data = (size << 13) | (opcode & maxOpcode);
-
-            ByteBuffer buffer = ByteBuffer.allocate(4);
-            buffer.order(ByteOrder.LITTLE_ENDIAN);
             buffer.putInt(data);
 
             return crypt.encrypt(buffer.array());
         }
 
-        ByteBuffer buffer = ByteBuffer.allocate(4);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort((short)(size + 2));
         buffer.putShort((short)opcode);
         return buffer.array();
     }
 
     private PacketHeader decodeHeader(byte[] encoded) {
+        int bufferSize = crypt.isEnabled() ? 4 : 6;
+        DataBuffer buffer = new DataBuffer(bufferSize);
+
         if (crypt.isEnabled()) {
             byte[] decrypted = crypt.decrypt(encoded);
 
-            ByteBuffer buffer = ByteBuffer.allocate(4);
-            buffer.order(ByteOrder.LITTLE_ENDIAN);
-            buffer.put(decrypted);
+            buffer.putBytes(decrypted);
             buffer.position(0);
 
             int headerValue = buffer.getInt();
@@ -104,11 +101,7 @@ public class WorldSessionPacketIO extends PacketIO {
             return new PacketHeader(opcode, size);
         }
 
-        byte[] header = crypt.decrypt(encoded);
-
-        ByteBuffer buffer = ByteBuffer.allocate(6);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
-        buffer.put(header);
+        buffer.putBytes(encoded);
         buffer.position(0);
 
         short size = (short)(buffer.getShort() - 4);
