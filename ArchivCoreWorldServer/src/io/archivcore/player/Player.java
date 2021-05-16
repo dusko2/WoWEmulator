@@ -5,6 +5,7 @@
  */
 package io.archivcore.player;
 
+import io.archivcore.guid.ObjectGuid;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,10 @@ public class Player {
 
     public final void addNewCharacter(PlayerCharacter character) {
         characters.put(character.objectGuid.guid, character);
+    }
+
+    public final void deleteCharacter(ObjectGuid characterGuid) {
+        characters.remove(characterGuid.guid);
     }
 
     public final Collection<PlayerCharacter> getAllCharacters() {

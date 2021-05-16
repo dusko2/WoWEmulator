@@ -102,6 +102,34 @@ public class DataBuffer {
         return new String(bytes);
     }
 
+    public final byte getByteSeq(byte mask) {
+        if (mask != 0) {
+            return (byte)(mask ^ getByte());
+        }
+
+        return 0;
+    }
+
+    public final byte[] getGuidMask(int... order) {
+        byte[] guidMask = new byte[order.length];
+
+        for (int offset : order) {
+            guidMask[offset] = getBit() ? (byte)1 : 0;
+        }
+
+        return guidMask;
+    }
+
+    public final byte[] getGuidBytes(byte[] guidMask, int... order) {
+        byte[] guidBytes = new byte[order.length];
+
+        for (int offset : order) {
+            guidBytes[offset] = getByteSeq(guidMask[offset]);
+        }
+
+        return guidBytes;
+    }
+
     public final void putByte(byte value) {
         internalBuffer.put(value);
     }
@@ -137,6 +165,18 @@ public class DataBuffer {
     public final void putByteSeq(byte value) {
         if (value != 0) {
             putByte((byte)(value ^ 1));
+        }
+    }
+
+    public final void putGuidBytes(byte[] guidBytes, int... order) {
+        for (int offset : order) {
+            putByteSeq(guidBytes[offset]);
+        }
+    }
+
+    public final void putGuidMask(byte[] guidBytes, int... order) {
+        for (int offset : order) {
+            putBit(guidBytes[offset]);
         }
     }
 

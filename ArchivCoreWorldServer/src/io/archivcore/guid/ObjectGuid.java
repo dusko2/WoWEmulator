@@ -25,6 +25,16 @@ public class ObjectGuid {
         this.bytes = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
+    public ObjectGuid(byte[] guidBytes) {
+        this.bytes = guidBytes;
+
+        DataBuffer buffer = new DataBuffer(Long.BYTES);
+        buffer.putBytes(this.bytes);
+        buffer.position(0);
+
+        this.guid = buffer.getLong();
+    }
+
     public ObjectGuid(long guid) {
         this.guid = guid;
         this.bytes = new byte[Long.BYTES];
@@ -33,6 +43,10 @@ public class ObjectGuid {
         buffer.putLong(this.guid);
         buffer.position(0);
         buffer.getBytes(this.bytes);
+    }
+
+    public final int lowPart() {
+        return (int)(guid & 0x00000000FFFFFFFF);
     }
 
     public static ObjectGuid create(int id, int e, HighGuidType type) {

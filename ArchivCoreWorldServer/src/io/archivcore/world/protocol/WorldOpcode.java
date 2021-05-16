@@ -26,6 +26,7 @@ public enum WorldOpcode {
     CmsgUpdateAccountData       (0x0068, WorldOpcodeStatus.Active), // 5.4.8
     CmsgRandomizeCharacterName  (0x0B1C, WorldOpcodeStatus.Active), // 5.4.8
     CmsgCharacterCreate         (0x0F1D, WorldOpcodeStatus.Active), // 5.4.8
+    CmsgCharacterDelete         (0x04E2, WorldOpcodeStatus.Active),
 
     /*
      * Server messages
@@ -42,6 +43,7 @@ public enum WorldOpcode {
     SmsgEnumCharactersResult  (0x11C3), // 5.4.8
     SmsgRandomizeCharacterName(0x169F), // 5.4.8
     SmsgCharacterCreate       (0x1CAA), // 5.4.8
+    SmsgCharacterDelete       (0x0C9F),
 
     SmsgUpdateAccountDataDone (0x0000); // Unknown
 

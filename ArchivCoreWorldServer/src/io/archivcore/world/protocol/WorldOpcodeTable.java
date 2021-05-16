@@ -11,6 +11,7 @@ import java.util.Map;
 import io.archivcore.world.WorldSession;
 import io.archivcore.world.handler.AuthSessionHandler;
 import io.archivcore.world.handler.CharacterCreateHandler;
+import io.archivcore.world.handler.CharacterDeleteHandler;
 import io.archivcore.world.handler.EnumCharactersHandler;
 import io.archivcore.world.handler.LogDisconnectHandler;
 import io.archivcore.world.handler.PingHandler;
@@ -38,6 +39,7 @@ public class WorldOpcodeTable {
         opcodeTable.put(WorldOpcode.CmsgUpdateAccountData,        new UpdateAccountDataHandler());
         opcodeTable.put(WorldOpcode.CmsgRandomizeCharacterName,   new RandomizeCharacterNameHandler());
         opcodeTable.put(WorldOpcode.CmsgCharacterCreate,          new CharacterCreateHandler());
+        opcodeTable.put(WorldOpcode.CmsgCharacterDelete,          new CharacterDeleteHandler());
     }
 
     public final void handle(WorldOpcode opcode, WorldSession session, Packet packet) {
