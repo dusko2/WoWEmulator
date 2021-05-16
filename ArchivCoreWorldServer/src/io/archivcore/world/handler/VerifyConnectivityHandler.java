@@ -11,7 +11,8 @@ package io.archivcore.world.handler;
 
 import io.archivcore.networking.packet.Packet;
 import io.archivcore.world.WorldSession;
-import io.archivcore.world.packet.AuthChallengePacket;
+import io.archivcore.world.packet.WorldPacket;
+import io.archivcore.world.protocol.WorldOpcode;
 import io.archivcore.world.protocol.WorldOpcodeHandler;
 
 /**
@@ -25,10 +26,23 @@ public class VerifyConnectivityHandler implements WorldOpcodeHandler {
         String received = packet.body.getString();
 
         if (expectedMessage.equals(received)) {
-            AuthChallengePacket responsePacket = new AuthChallengePacket(session.authSeed);
-            session.send(responsePacket);
+            sendAuthChallenge(session);
         } else {
             // TODO: close session
         }
+    }
+
+    private void sendAuthChallenge(WorldSession session) {
+        WorldPacket packet = new WorldPacket(WorldOpcode.SmsgAuthChallenge, 39);
+        packet.body.putShort((short)0);
+
+        for (int i = 0; i < 8; i++) {
+            packet.body.putInt(0);
+        }
+
+        packet.body.putByte((byte)1);
+        packet.body.putBytes(session.authSeed);
+
+        session.send(packet);
     }
 }
